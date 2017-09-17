@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "./public/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "experimentalDecorators": true,
+        "target": "es5",
+        "jsx": "react",
+        "baseUrl": "./",
+        "allowJs": true,
+        "typeRoots": [ "node_modules/@types", "app/types.d.ts"]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
