@@ -1,0 +1,15 @@
+Flask==0.12.2
+Jinja2==2.9.6
+MarkupSafe==1.0
+Pillow==4.2.1
+Werkzeug==0.12.2
+click==6.7
+itsdangerous==0.24
+nltk==3.2.4
+numpy==1.13.1
+olefile==0.44
+pip==9.0.1
+scikit-learn==0.19.0
+scipy==1.0.0b1
+setuptools==28.8.0
+six==1.11.0
