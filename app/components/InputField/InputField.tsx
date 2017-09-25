@@ -3,6 +3,7 @@ import style      from 'styled-components';
 
 const InputContainer = style.div`
     text-align: center;
+    height: 80px;
 `;
 
 const Input = style.input`
@@ -43,7 +44,6 @@ interface InputFieldState {
 }
 
 class InputField extends React.Component<InputFieldProps, InputFieldState> {
-
 	constructor(props: InputFieldProps) {
 		super();
 		this.state = {

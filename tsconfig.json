@@ -8,7 +8,7 @@
         "baseUrl": "./",
         "allowJs": true,
         "typeRoots": [ "node_modules/@types", "app/types.d.ts"],
-        "lib" : ["es2016", "dom", "es7"]
+        "lib" : ["es2016", "dom"]
     },
     "exclude": [
         "node_modules"

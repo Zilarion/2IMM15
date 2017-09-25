@@ -1,3 +1,6 @@
+from models.Data import Data
+
+
 class Paper:
     def __init__(self, id, year, title, event_type, pdf_name, abstract, paper_text):
         self.id = id
@@ -14,3 +17,9 @@ class Paper:
 
     def to_string(self):
         return "id: " + str(self.id) + " tile: " + self.title
+
+    def to_json(self):
+        authors = []
+        for author_id in self.authors:
+            authors.append(Data.authors[author_id].to_json())
+        return {'id': self.id, 'title': self.title, 'year': self.year, 'authors': authors}
