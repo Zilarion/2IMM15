@@ -23,8 +23,9 @@ def load_models(cursor):
         # create new author with id and name
         author = Author(row[0], row[1])
         Data.add_author(author)
+
     for row in cursor.execute('SELECT * FROM paper_authors'):
         Data.papers[row[1]].add_author(row[2])
 
-    print(len(Data.papers))
-    print(len(Data.authors))
+    for key, paper in Data.papers.items():
+        print(paper.authors)

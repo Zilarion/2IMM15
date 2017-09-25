@@ -1,11 +1,10 @@
 class Author:
-    id = ""
-    name = ""
-    co_authors = set()
 
     def __init__(self, id, name):
         self.id = id
         self.name = name
+        self.co_authors = set()
+
 
     def add_co_author(self, author):
         if author.id != self.id:
