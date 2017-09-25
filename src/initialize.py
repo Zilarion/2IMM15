@@ -26,6 +26,5 @@ def load_models(cursor):
 
     for row in cursor.execute('SELECT * FROM paper_authors'):
         Data.papers[row[1]].add_author(row[2])
+        Data.authors[row[2]].add_paper(row[1])
 
-    for key, paper in Data.papers.items():
-        print(paper.authors)
