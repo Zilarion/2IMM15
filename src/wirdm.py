@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import redirect
 
 from initialize import initialize
 
@@ -16,6 +17,10 @@ def root():
 def hello_world():
     return 'Hello, World!'
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return redirect("/", code=302)
 
 if __name__ == '__main__':
     app.run(debug=True)
