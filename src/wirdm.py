@@ -18,7 +18,6 @@ def root():
 @app.route('/query', methods=['POST'])
 def new_query():
     content = request.get_json()
-    print(content)
     return query_handler.handle_query(content)
 
 
