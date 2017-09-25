@@ -3,11 +3,12 @@
         "outDir": "./public/",
         "sourceMap": true,
         "noImplicitAny": true,
-        "target": "es5",
+        "target": "es2016",
         "jsx": "react",
         "baseUrl": "./",
         "allowJs": true,
-        "typeRoots": [ "node_modules/@types", "app/types.d.ts"]
+        "typeRoots": [ "node_modules/@types", "app/types.d.ts"],
+        "lib" : ["es2016", "dom", "es7"]
     },
     "exclude": [
         "node_modules"

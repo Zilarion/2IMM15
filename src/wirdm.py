@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import redirect
+from flask import request
 
+import query_handler
 from initialize import initialize
 
 # set the project root directory as the static folder, you can set others.
@@ -13,9 +15,11 @@ def root():
     return app.send_static_file('index.html')
 
 
-@app.route('/query')
-def hello_world():
-    return 'Hello, World!'
+@app.route('/query', methods=['POST'])
+def new_query():
+    content = request.get_json()
+    print(content)
+    return query_handler.handle_query(content)
 
 
 @app.errorhandler(404)

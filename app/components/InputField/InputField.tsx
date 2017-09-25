@@ -34,16 +34,50 @@ const AfterInput = style.span`
 
 
 interface InputFieldProps {
-    placeholder?: string
+	placeholder: string
+	onEnter: Function
 }
 
-const InputField = (props: InputFieldProps) => {
-    return (
-        <InputContainer>
-            <Input placeholder={props.placeholder}/>
-            <AfterInput />
-        </InputContainer>
-    );
-};
+interface InputFieldState {
+	value: string
+}
+
+class InputField extends React.Component<InputFieldProps, InputFieldState> {
+
+	constructor(props: InputFieldProps) {
+		super();
+		this.state = {
+			value: ''
+		};
+		this.handleChange = this.handleChange.bind(this);
+		this.keyPress = this.keyPress.bind(this);
+	}
+
+	keyPress(inputChar: any){
+		const key = inputChar.key;
+		if(key == 'Enter') {
+			this.props.onEnter(this.state.value);
+		}
+	}
+
+	handleChange(event: any) {
+		this.setState({
+			value: event.target.value
+		});
+	}
+
+	render() {
+		return (
+			<InputContainer>
+				<Input value={this.state.value}
+							 placeholder={this.props.placeholder}
+							 onChange={this.handleChange}
+							 onKeyPress={this.keyPress}
+				/>
+				<AfterInput />
+			</InputContainer>
+		);
+	}
+}
 
 export { InputField };
