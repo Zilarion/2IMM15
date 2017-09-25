@@ -8,7 +8,7 @@ class Author:
         self.name = name
 
     def add_co_author(self, author):
-        if(author.id != self.id):
+        if author.id != self.id:
             self.co_authors.add(author)
 
     def to_string(self):

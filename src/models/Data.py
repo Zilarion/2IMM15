@@ -1,12 +1,14 @@
 class Data:
-    authors = {}
-    papers = []
+    authors = dict()
+    papers = dict()
 
     def __init__(self):
         pass
 
-    def add_author(self, author):
-        self.authors[author.id] = author
+    @classmethod
+    def add_author(cls, author):
+        cls.authors[author.id] = author
 
-    def add_paper(self, paper):
-        self.papers[paper.id] = paper
+    @classmethod
+    def add_paper(cls, paper):
+        cls.papers[paper.id] = paper
