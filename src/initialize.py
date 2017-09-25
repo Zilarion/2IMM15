@@ -1,11 +1,11 @@
 import sqlite3
-from src.models.Author import Author
+from models.Author import Author
 
 
 # Initializes everything by loading data in memory
 def initialize():
     # Create a SQL connection to our SQLite database
-    con = sqlite3.connect("data/database.sqlite")
+    con = sqlite3.connect("src/data/database.sqlite")
 
     cur = con.cursor()
     create_co_author_graph(cur)

@@ -4,7 +4,7 @@ import sqlite3
 from math import log
 
 # SQL settings
-Database = 'C:/Users/s161590/Documents/TUE/IR_DataMining/nips-papers/database.sqlite'
+Database = 'src/data/database.sqlite'
 sql = sqlite3
 c = sql.connect(database=Database)
 

@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Application for the web information retrieval and data mining course",
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run watch\" \"npm run server\" \"npm run api\"",
-    "server": "bin/runserver.sh",
+    "dev": "concurrently --kill-others \"npm run watch\" \"npm run api\"",
     "api": "FLASK_APP=src/wirdm.py flask run",
     "watch": "webpack -d --watch",
     "build": "webpack -p"
