@@ -1,6 +1,7 @@
 class Data:
     authors = dict()
     papers = dict()
+    inverted_index = {}
 
     def __init__(self):
         pass
