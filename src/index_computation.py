@@ -8,6 +8,8 @@ def compute_index():
     documents = []
     for i, paper in Data.papers.items():
         documents.append(paper.paper_text)
+        if i > 10:
+            break
     Data.inverted_index = get_inv_ind(documents)
 
     results = query('Learning', Data.inverted_index, len(documents))
