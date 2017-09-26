@@ -38,7 +38,8 @@ def get_document_tf(papers):
         doc_term_freq[i] = get_tf(doc)
     return doc_term_freq
 
-#Creating the inverted index for tf_idf
+
+# Creating the inverted index for tf_idf
 def get_inv_ind(papers):
     inverted_index = {}
     for i, document in enumerate(papers):
@@ -55,14 +56,15 @@ def get_inv_ind(papers):
                 inverted_index[j] = {i:1}
     return inverted_index
 
-#Simple idf calculation
+
+# Simple idf calculation
 def idf(term, idx, n):
     return math.log(1 + (float(n) / len(idx[term])))
 
 
-def query(query, idx, n):
-    score={}
-    for term in query.split():
+def query(q, idx, n):
+    score = {}
+    for term in q.split():
         if term in idx:
             i = idf(term, idx, n)
             for doc in idx[term]:
@@ -70,11 +72,11 @@ def query(query, idx, n):
 
     result = []
 
-    for x in [[r[0],r[1]] for r in zip(score.keys(), score.values())]:
+    for x in [[r[0], r[1]] for r in zip(score.keys(), score.values())]:
         if x[1] > 0:
-            result.append([x[1],x[0]+1])
+            result.append([x[1], x[0]+1])
 
-    sorted_result = sorted(result, key=lambda t:t[0] * -1)
+    sorted_result = sorted(result, key=lambda t: t[0] * -1)
 
     return sorted_result
 
