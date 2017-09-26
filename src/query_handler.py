@@ -1,17 +1,16 @@
 from flask import jsonify
+
+from index_computation import query
 from models.Data import Data
 
 
 def handle_query(query_content):
-    query = query_content.get('query')
+    q = query_content.get('query')
+    ranking = query(q, Data.inverted_index, 10)
 
     result = []
-    count = 0
-    # Just randomly reply with the first 50 papers for now
-    for paper_id, paper in Data.papers.items():
-        if count >= 50:
-            break
-        count += 1
+    for rank_value, paper_id in ranking:
+        paper = Data.papers[paper_id]
         authors = paper.authors
         author_names = []
         for author_id in authors:
