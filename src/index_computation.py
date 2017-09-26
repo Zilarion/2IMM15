@@ -12,11 +12,6 @@ def compute_index():
             break
     Data.inverted_index = get_inv_ind(documents)
 
-    results = query('Learning', Data.inverted_index, len(documents))
-
-    for i in results:
-        print(i)
-
 
 # Calculating the term frequency for a single document
 def get_tf(document):
@@ -67,6 +62,7 @@ def idf(term, idx, n):
 def query(q, idx, n):
     score = {}
     for term in q.split():
+        term = term.lower()
         if term in idx:
             i = idf(term, idx, n)
             for doc in idx[term]:
