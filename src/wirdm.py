@@ -25,5 +25,6 @@ def new_query():
 def page_not_found(e):
     return redirect("/", code=302)
 
+
 if __name__ == '__main__':
     app.run(debug=True)

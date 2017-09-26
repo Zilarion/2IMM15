@@ -12,10 +12,13 @@ def initialize():
     con = sqlite3.connect("src/data/database.sqlite")
 
     cur = con.cursor()
+    print("Loading data..")
     load_models(cur)
-    print("Working..")
+    print("Done")
+    print("Computing index..")
     compute_index()
     print("Done")
+
 
 # imports the papers and authors in memory
 def load_models(cursor):
@@ -23,7 +26,7 @@ def load_models(cursor):
         paper = Paper(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
         Data.add_paper(paper)
 
-    for row in cursor.execute('SELECT * FROM authors;'):
+    for row in cursor.execute('SELECT * FROM authors'):
         # create new author with id and name
         author = Author(row[0], row[1])
         Data.add_author(author)
