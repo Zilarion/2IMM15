@@ -22,7 +22,7 @@ def compute_index():
 def get_tf(document):
     tf = {}
     tokenized_words = document.replace(',','')
-    tokenized_document = RegexpTokenizer(r'\w+').tokenize(tokenized_words)
+    tokenized_document = RegexpTokenizer(r'\w+').tokenize(tokenized_words.lower())
     filtered_words = [word for word in tokenized_document if word not in stopwords.words('english')]
     for j in filtered_words:
         if j in tf:
@@ -46,7 +46,7 @@ def get_inv_ind(papers):
     inverted_index = {}
     for i, document in enumerate(papers):
         tokenized_words = document.replace(',', '')
-        tokenized_paper = RegexpTokenizer(r'\w+').tokenize(tokenized_words)
+        tokenized_paper = RegexpTokenizer(r'\w+').tokenize(tokenized_words.lower())
         filtered_words = [word for word in tokenized_paper if word not in stopwords.words('english')]
         for j in filtered_words:
             if j in inverted_index:
