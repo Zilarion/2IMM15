@@ -1,4 +1,6 @@
 import sqlite3
+
+from index_computation import compute_index
 from models.Author import Author
 from models.Paper import Paper
 from models.Data import Data
@@ -11,7 +13,9 @@ def initialize():
 
     cur = con.cursor()
     load_models(cur)
-
+    print("Working..")
+    compute_index()
+    print("Done")
 
 # imports the papers and authors in memory
 def load_models(cursor):
