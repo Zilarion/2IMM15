@@ -15,10 +15,6 @@ def initialize():
     print("Loading data..")
     load_models(cur)
     print("Done")
-    print("Computing index..")
-    compute_index()
-    print("Done")
-
 
 # imports the papers and authors in memory
 def load_models(cursor):

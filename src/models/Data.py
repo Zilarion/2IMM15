@@ -2,6 +2,7 @@ class Data:
     authors = dict()
     papers = dict()
     inverted_index = {}
+    citations = {}
 
     def __init__(self):
         pass
