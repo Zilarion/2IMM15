@@ -1,6 +1,6 @@
 import * as React from 'react';
 import style      from 'styled-components';
-import { PaperItem } from 'app/components/PaperItem';
+import {PaperItem} from "../PaperItem/PaperItem";
 
 const PaperListContainer = style.div`
     text-align: center;
@@ -16,13 +16,16 @@ const PaperList = (props: PaperListProps) => {
 	if (props.papers.length == 0)
 		papers = <span>Query has no results</span>;
 	else
-		papers = props.papers.map((paper: PaperType) => {
+		papers = props.papers.map((paper: PaperType, index:number) => {
+			const animTime = index * 50 + 50;
 			return <PaperItem
 				key={paper.id}
 				id={paper.id}
 				title={paper.title}
 				authors={paper.authors}
 				link={paper.link}
+				score={paper.score}
+				animTime={animTime}
 			/>
 		});
 

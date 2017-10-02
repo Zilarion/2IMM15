@@ -31,5 +31,7 @@ def handle_paper_query(q):
         author_names = []
         for author_id in authors:
             author_names.append(Data.authors[author_id].name)
-        result.append(paper.to_json())
+        json = paper.to_json()
+        json['score'] = rank_value
+        result.append(json)
     return result

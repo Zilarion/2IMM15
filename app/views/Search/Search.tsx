@@ -3,12 +3,24 @@
 // Libraries
 import * as React   from 'react';
 import style        from 'styled-components';
-import {InputField} from "app/components/InputField";
-import {PaperList}  from "app/components/PaperList";
 import * as $       from 'jquery';
+import {PaperList} from "../../components/PaperList/PaperList";
+import {InputField} from "../../components/InputField/InputField";
 
 const SearchContainer = style.div`
-    padding: 15px;
+    height: 80px;
+`;
+
+const HeaderContainer = style.div`
+    position: absolute;
+    top: 0px;
+    padding: ${(props: any) => props.theme.margins.small};
+    width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
+`;
+
+const ResultContainer = style.div`
+    margin-top: 80px;
+    width: 100%
 `;
 
 interface SearchState {
@@ -36,6 +48,11 @@ class Search extends React.Component<{}, SearchState> {
         const data = {
             query: value
         };
+
+        this.setState({
+            papers: []
+        });
+
         $.ajax({
             url: "query",
             type: "POST",
@@ -53,8 +70,12 @@ class Search extends React.Component<{}, SearchState> {
     render() {
         return (
             <SearchContainer>
-                <InputField placeholder="Search..." onEnter={this.onEnter} />
-                <PaperList papers={this.state.papers} />
+                <HeaderContainer>
+                    <InputField placeholder="Search..." onEnter={this.onEnter} />
+                </HeaderContainer>
+                <ResultContainer>
+                    <PaperList papers={this.state.papers} />
+                </ResultContainer>
             </SearchContainer>
         );
     }

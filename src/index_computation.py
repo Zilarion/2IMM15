@@ -8,7 +8,7 @@ def compute_index():
     documents = []
     for i, paper in Data.papers.items():
         documents.append(paper.title + "\n" + paper.paper_text)
-        if i > 10:
+        if i > 40:
             break
     Data.inverted_index = get_inv_ind(documents)
 

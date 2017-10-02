@@ -1,34 +1,37 @@
 import * as React from 'react';
-import style      from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
-const PaperItemContainer = style.div`
-    text-align: left;
-    padding: ${props => props.theme.margins.small};
-    margin: ${props => props.theme.margins.small};
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 `;
 
-const SubTitleContainer = style.div`
-	color: ${props => props.theme.colors.subTitle};
+const PaperItemContainer = styled.div`
+    text-align: left;
+    padding: ${(props: any) => props.theme.margins.small};
+    margin: ${(props: any) => props.theme.margins.small};
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		animation: ${fadeIn} ${(props: any) => { return props.animTime }}ms linear;
+`;
+
+const SubTitleContainer = styled.div`
+	color: ${(props: any) => props.theme.colors.subTitle};
 	font-size: 12px;
 `;
 
-interface PaperItemProps {
-	id: number,
-	title: string,
-	authors: Array<AuthorType>,
-	link?: string
-}
-
-const PaperItem = (props: PaperItemProps) => {
+const PaperItem = (props: PaperType) => {
 	let authorNames = [];
 	for (const author of props.authors)
 		authorNames.push(author.name);
 
-	console.log(authorNames);
 	return (
-		<PaperItemContainer>
-			<a href={props.link}>{props.title}</a><br />
+		<PaperItemContainer animTime={props.animTime}>
+			<a href={props.link}>({props.score.toFixed(2)}) {props.title}</a><br />
 			<SubTitleContainer>{authorNames.join(', ')}</SubTitleContainer>
 		</PaperItemContainer>
 	);
