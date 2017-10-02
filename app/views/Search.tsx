@@ -41,6 +41,8 @@ const ResultContainer = style.div`
 
 interface SearchState {
     papers: Array<PaperType>
+    query?: string,
+    domain?: string,
 }
 
 type SearchProps = {
@@ -57,50 +59,66 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			  this.onInputEnter = this.onInputEnter.bind(this);
     }
 
-    componentWillMount() {
+		componentWillMount() {
+      this.handlePropsUpdate();
+      this.props.history.listen((location: any, action: any) => {
+        this.handlePropsUpdate();
+      })
+    }
+
+    handlePropsUpdate() {
 			let urlParams = this.props.match.params;
-			if(urlParams.domain && urlParams.query)
+			if (urlParams.domain === undefined || urlParams.query === undefined) return;
+			if(urlParams.domain !== this.state.domain || urlParams.query !== this.state.query) {
 				this.queryData({
 					query: urlParams.query,
 					domain: urlParams.domain
 				})
+			}
     }
 
-    handleChange(data: any) {
-        // TODO no longer assume every reply is a paper :)
+	  handleQueryReply(data: any) {
+        let urlParams = this.props.match.params;
+        if (data.query !== urlParams.query || data.domain !== urlParams.domain) {
+            const domain = urlParams.domain || 'papers';
+            this.props.history.push('/search/' + domain + '/' + data.query);
+        }
+			// TODO no longer assume every reply is a paper :)
         this.setState({
+          ...this.state,
+          query: data.query,
+          domain: data.domain,
           papers: data.papers
         });
     }
 
     queryData(postData: {query: string, domain: string}) {
-			$.ajax({
-				url: "/query",
-				type: "POST",
-				data: JSON.stringify(postData),
-				contentType: "application/json",
-				success: (data) => {
-					// Handle the change
-					this.handleChange({
-						papers: data
-					});
-					if (postData.query !== this.props.match.params.query || postData.domain !== this.props.match.params.domain) {
-						const domain = this.props.match.params.domain || 'papers';
-						this.props.history.push('/search/' + domain + '/' + postData.query);
-					}
-				}
-			});
+        $.ajax({
+            url: "/query",
+            type: "POST",
+            data: JSON.stringify(postData),
+            contentType: "application/json",
+            success: (data) => {
+              // Handle the change
+              this.handleQueryReply({
+                papers: data,
+								query: postData.query,
+								domain: postData.domain,
+              });
+            }
+        });
     }
 
     onInputEnter(value: string) {
         // Reset state
         this.setState({
+          ...this.state,
           papers: []
         });
 
         this.queryData({
           query: value,
-					domain: this.props.match.params.domain
+					domain: this.props.match.params.domain || 'papers'
         });
     }
 
@@ -111,7 +129,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
           value={params.query}
           onEnter={this.onInputEnter}
         />;
-        if (!params.domain)
+        if (params.domain === undefined)
             return (
               <SearchContainer>
                   <CenterContainer>
