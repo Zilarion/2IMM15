@@ -6,8 +6,7 @@ class Author:
         self.papers = set()
 
     def add_co_author(self, author):
-        if author.id != self.id:
-            self.co_authors.add(author)
+        self.co_authors.add(author)
 
     def add_paper(self, paper_id):
         self.papers.add(paper_id)

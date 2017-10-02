@@ -31,3 +31,8 @@ def load_models(cursor):
         Data.papers[row[1]].add_author(row[2])
         Data.authors[row[2]].add_paper(row[1])
 
+    for key, paper in Data.papers.items():
+        for author in paper.authors:
+            Data.authors[author].add_co_author(paper.authors)
+
+
