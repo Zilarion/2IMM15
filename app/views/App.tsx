@@ -4,9 +4,7 @@
 import * as React                  from 'react';
 import style                       from 'styled-components';
 import { Route, Redirect, Switch } from 'react-router-dom';
-
-// Views
-import { Search }       from './Search';
+import {Search} from "./Search/Search";
 
 const AppContent = style.div`
 	height: 100%;

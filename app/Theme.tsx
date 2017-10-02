@@ -5,7 +5,8 @@ const Theme = {
         subTitle: "#999"
     },
     margins: {
-        small: '12px'
+        small: '12px',
+			  smallx2: '24px'
     }
 };
 
