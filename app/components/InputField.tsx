@@ -25,7 +25,7 @@ const AfterInput = style.span`
     display:inline-block;
     width:0px;
     height: 2px;
-    background: #FEC938;
+    background: ${(props: any) => props.theme.colors.accent };
     position: relative;
     top: -13px;
     -webkit-transition: all ease-in-out .15s;
@@ -35,8 +35,9 @@ const AfterInput = style.span`
 
 
 interface InputFieldProps {
-	placeholder: string
-	onEnter: Function
+	placeholder: string,
+	onEnter: Function,
+	value: string
 }
 
 interface InputFieldState {
@@ -47,7 +48,7 @@ class InputField extends React.Component<InputFieldProps, InputFieldState> {
 	constructor(props: InputFieldProps) {
 		super();
 		this.state = {
-			value: ''
+			value: props.value || ''
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.keyPress = this.keyPress.bind(this);
@@ -69,7 +70,8 @@ class InputField extends React.Component<InputFieldProps, InputFieldState> {
 	render() {
 		return (
 			<InputContainer>
-				<Input value={this.state.value}
+				<Input autoFocus
+							 value={this.state.value}
 							 placeholder={this.props.placeholder}
 							 onChange={this.handleChange}
 							 onKeyPress={this.keyPress}

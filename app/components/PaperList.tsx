@@ -1,9 +1,11 @@
 import * as React from 'react';
 import style      from 'styled-components';
-import {PaperItem} from "../PaperItem/PaperItem";
+import {PaperItem} from "./PaperItem";
 
 const PaperListContainer = style.div`
     text-align: center;
+    float: left;
+    width: 80%;
 `;
 
 interface PaperListProps {
@@ -16,7 +18,7 @@ const PaperList = (props: PaperListProps) => {
 	if (props.papers.length == 0)
 		papers = <span>Query has no results</span>;
 	else
-		papers = props.papers.map((paper: PaperType, index:number) => {
+		papers = props.papers.map((paper, index:number) => {
 			const animTime = index * 50 + 50;
 			return <PaperItem
 				key={paper.id}

@@ -1,13 +1,16 @@
 const Theme = {
-    colors: {
-        primary: "black",
-        secondary: "white",
-        subTitle: "#999"
-    },
-    margins: {
-        small: '12px',
-			  smallx2: '24px'
-    }
+	colors: {
+		accent:    "#3e96fa",
+		subTitle:  "#999",
+		inactive:  "#999",
+		header:    "#eee",
+	},
+	margins: {
+		tiny: '6px',
+		small: '12px',
+		smallx2: '24px',
+		large: '24px',
+	}
 };
 
 export { Theme };
