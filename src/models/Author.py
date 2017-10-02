@@ -5,8 +5,10 @@ class Author:
         self.co_authors = set()
         self.papers = set()
 
-    def add_co_author(self, author):
-        self.co_authors.add(author)
+    def add_co_author(self, authors):
+        for coauthor in authors:
+            if self.id != coauthor:
+                self.co_authors.add(coauthor)
 
     def add_paper(self, paper_id):
         self.papers.add(paper_id)

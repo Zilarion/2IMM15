@@ -34,5 +34,3 @@ def load_models(cursor):
     for key, paper in Data.papers.items():
         for author in paper.authors:
             Data.authors[author].add_co_author(paper.authors)
-
-
