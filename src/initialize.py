@@ -5,6 +5,7 @@ from index_computation import compute_index
 from models.Author import Author
 from models.Paper import Paper
 from models.Data import Data
+from author_graph import authorgraph
 
 
 # Initializes everything by loading data in memory
@@ -15,12 +16,17 @@ def initialize():
     cur = con.cursor()
     print("Loading data..")
     load_models(cur)
+<<<<<<< refs/remotes/origin/master
     print("Loaded data")
     # fetch_citations()
     print("Loading inverted index..")
     compute_index()
     print("Loaded inverted index")
 
+=======
+    print("Done")
+    create_author_graph()
+>>>>>>> Added a start on clustering of Authors
 
 # imports the papers and authors in memory
 def load_models(cursor):
@@ -40,3 +46,7 @@ def load_models(cursor):
     for key, paper in Data.papers.items():
         for author in paper.authors:
             Data.authors[author].add_co_author(paper.authors)
+
+
+def create_author_graph():
+    authorgraph().load()
