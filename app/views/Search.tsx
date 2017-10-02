@@ -43,51 +43,74 @@ interface SearchState {
     papers: Array<PaperType>
 }
 
-class SearchWithoutRouter extends React.Component<{history: any, match: any}, SearchState> {
-    constructor() {
+type SearchProps = {
+  history: any,
+  match: any
+}
+
+class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
+    constructor(props: SearchProps) {
         super();
         this.state = {
             papers: []
         };
-        this.onEnter = this.onEnter.bind(this);
+			  this.onInputEnter = this.onInputEnter.bind(this);
+    }
+
+    componentWillMount() {
+			let urlParams = this.props.match.params;
+			if(urlParams.domain && urlParams.query)
+				this.queryData({
+					query: urlParams.query,
+					domain: urlParams.domain
+				})
     }
 
     handleChange(data: any) {
         // TODO no longer assume every reply is a paper :)
         this.setState({
-            papers: data.papers
+          papers: data.papers
         });
     }
 
-    onEnter(value: string) {
-        const data = {
-            query: value
-        };
+    queryData(postData: {query: string, domain: string}) {
+			$.ajax({
+				url: "/query",
+				type: "POST",
+				data: JSON.stringify(postData),
+				contentType: "application/json",
+				success: (data) => {
+					// Handle the change
+					this.handleChange({
+						papers: data
+					});
+					if (postData.query !== this.props.match.params.query || postData.domain !== this.props.match.params.domain) {
+						const domain = this.props.match.params.domain || 'papers';
+						this.props.history.push('/search/' + domain + '/' + postData.query);
+					}
+				}
+			});
+    }
 
+    onInputEnter(value: string) {
+        // Reset state
         this.setState({
-            papers: []
+          papers: []
         });
 
-        const domain = this.props.match.domain || 'papers';
-			  this.props.history.push('/search/' + domain + '/' + value);
-
-        $.ajax({
-            url: "/query",
-            type: "POST",
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            success: (data) => {
-                // Handle the change
-                this.handleChange({
-                    papers: data
-                });
-            }
+        this.queryData({
+          query: value,
+					domain: this.props.match.params.domain
         });
     }
 
     render() {
         let params = this.props.match.params;
-        let inputField = <InputField placeholder="Search..." value={params.query} onEnter={this.onEnter} />;
+        let inputField = <InputField
+          placeholder="Search..."
+          value={params.query}
+          onEnter={this.onInputEnter}
+        />;
         if (!params.domain)
             return (
               <SearchContainer>
