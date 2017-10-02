@@ -1,9 +1,9 @@
 'use strict';
 
 // Libraries
-import * as React                  from 'react';
-import style                       from 'styled-components';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import * as React from 'react';
+import style from 'styled-components';
+import {Route, Redirect, Switch} from 'react-router-dom';
 import {Search} from "./Search";
 
 const AppContent = style.div`
@@ -12,7 +12,7 @@ const AppContent = style.div`
 `;
 
 interface AppProps {
-    history?: any;
+	history?: any;
 }
 
 class App extends React.Component<AppProps, {}> {
@@ -21,7 +21,7 @@ class App extends React.Component<AppProps, {}> {
 			<AppContent>
 				<Switch>
 					<Route path="/search/:domain?/:query?" component={Search}/>
-					<Redirect path="/" to="/search" />
+					<Redirect path="/" to="/search"/>
 					{/*<Route component={NotFound}/>*/}
 				</Switch>
 			</AppContent>
