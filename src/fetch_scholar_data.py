@@ -21,10 +21,13 @@ def fetch_paper(paper):
     query.set_phrase(paper.title)
     query.set_scope(True)
     query.set_num_page_results(1)
+    query.set_include_citations(False)
 
     querier.send_query(query)
 
+    print (len(querier.articles))
     if len(querier.articles) > 0:
         num_citations = querier.articles[0]['num_citations']
-        print(paper.id + "" + num_citations)
-        text_file.write("%s %s" % (paper.id, num_citations))
+        print(paper.id , "" , num_citations)
+        writeLine = paper.id + ' ' + num_citations + "\n"
+        text_file.write(writeLine)
