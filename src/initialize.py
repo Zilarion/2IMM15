@@ -15,11 +15,11 @@ def initialize():
     cur = con.cursor()
     print("Loading data..")
     load_models(cur)
-    print("Done")
+    print("Loaded data")
     # fetch_citations()
-    print("Computing index..")
+    print("Loading inverted index..")
     compute_index()
-    print("Done")
+    print("Loaded inverted index")
 
 
 # imports the papers and authors in memory

@@ -22,9 +22,10 @@ def handle_author_query(q):
 
 
 def handle_paper_query(q):
-    ranking = query(q, Data.inverted_index, 10)
-
+    ranking = query(q, Data.inverted_index, len(Data.papers))
     result = []
+    count = 0
+    # TODO pagination
     for rank_value, paper_id in ranking:
         paper = Data.papers[paper_id]
         authors = paper.authors
@@ -34,4 +35,7 @@ def handle_paper_query(q):
         json = paper.to_json()
         json['score'] = rank_value
         result.append(json)
+        count += 1
+        if count > 20:
+            break
     return result

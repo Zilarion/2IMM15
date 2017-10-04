@@ -7,18 +7,20 @@ from models.Data import Data
 
 def compute_index():
     loaded_index = dict()
+    limit_id = 500
     try:
         with open('inverted_index.txt', 'r') as file:
             data = file.readlines()
             for line in data:
                 line_data = dict(json.loads(line.rstrip()))
-                loaded_index[line_data["id"]] = line_data["inverted_index"]
+                if line_data["id"] < limit_id:
+                    loaded_index[line_data["id"]] = line_data["inverted_index"]
     except FileNotFoundError:
         print("No inverted index file yet.. computing")
 
     with open('inverted_index.txt', 'a') as file:
         for i, paper in Data.papers.items():
-            if paper.id not in loaded_index:
+            if paper.id not in loaded_index and paper.id < limit_id:
                 document = [paper.title + "\n" + paper.paper_text]
                 inv_index = get_inv_ind(document)
 
@@ -26,7 +28,17 @@ def compute_index():
                 result = {'id': paper.id, 'inverted_index': inv_index}
                 json.dump(result, file)
                 file.write("\n")
-                print("Computing II for", paper.id, "/", len(Data.papers))
+                print("Computing inverted index for", paper.id, "out of", len(Data.papers))
+
+    print("Reconstructing inv index")
+    final_index = {}
+    for paper_id, index in loaded_index.items():
+        for word in index:
+            if word not in final_index:
+                final_index[word] = dict()
+            final_index[word][paper_id] = index[word]['0']
+    Data.inverted_index = final_index
+    print("Reconstructing inv index")
 
 
 # Calculating the term frequency for a single document
@@ -88,7 +100,7 @@ def query(q, idx, n):
 
     for x in [[r[0], r[1]] for r in zip(score.keys(), score.values())]:
         if x[1] > 0:
-            result.append([x[1], x[0]+1])
+            result.append([x[1], x[0]])
 
     sorted_result = sorted(result, key=lambda t: t[0] * -1)
 
