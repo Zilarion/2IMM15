@@ -61,6 +61,13 @@ class InputField extends React.Component<InputFieldProps, InputFieldState> {
 		}
 	}
 
+	componentWillReceiveProps(nextProps: InputFieldProps) {
+		if (nextProps.value !== this.state.value)
+			this.setState({
+				value: nextProps.value
+			});
+	}
+
 	handleChange(event: any) {
 		this.setState({
 			value: event.target.value
