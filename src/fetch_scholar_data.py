@@ -1,4 +1,4 @@
-from lib import scholar
+from libraries import scholar
 from models.Data import Data
 import time
 
