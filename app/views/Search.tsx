@@ -39,15 +39,14 @@ const ResultContainer = style.div`
 	width: 100%
 `;
 
-interface SearchState {
-	papers: Array<PaperType>
-	query?: string,
-	domain?: string,
-}
 
-type SearchProps = {
+interface SearchProps {
 	history: any,
 	match: any
+}
+
+interface SearchState {
+	papers: Array<PaperType>
 }
 
 class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
@@ -60,21 +59,23 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 	}
 
 	componentWillMount() {
-		this.handlePropsUpdate();
-		this.props.history.listen((location: any, action: any) => {
-			this.handlePropsUpdate();
-		})
+		let initialUrl = this.props.match.params;
+		this.queryForUrl(initialUrl);
 	}
 
-	handlePropsUpdate() {
-		let urlParams = this.props.match.params;
-		if (urlParams.domain === undefined || urlParams.query === undefined) return;
-		if (urlParams.domain !== this.state.domain || urlParams.query !== this.state.query) {
-			this.queryData({
-				query: urlParams.query,
-				domain: urlParams.domain
-			})
+	componentWillReceiveProps(nextProps: SearchProps) {
+		let oldUrl = this.props.match.params;
+		let newUrl = nextProps.match.params;
+		if (oldUrl.domain !== newUrl.domain || oldUrl.query !== newUrl.query) {
+			this.queryForUrl(newUrl);
 		}
+	}
+
+	queryForUrl(url: {query: string, domain: string}) {
+		this.queryData( {
+			query: url.query,
+			domain: url.domain
+		})
 	}
 
 	handleQueryReply(data: any) {
@@ -83,11 +84,8 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			const domain = urlParams.domain || 'papers';
 			this.props.history.push('/search/' + domain + '/' + data.query);
 		}
-		// TODO no longer assume every reply is a paper :)
 		this.setState({
 			...this.state,
-			query: data.query,
-			domain: data.domain,
 			papers: data.papers
 		});
 	}
@@ -115,7 +113,6 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			...this.state,
 			papers: []
 		});
-
 		this.queryData({
 			query: value,
 			domain: this.props.match.params.domain || 'papers'

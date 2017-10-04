@@ -6,15 +6,15 @@ from models.Data import Data
 
 def handle_query(query_content):
     q = query_content.get('query')
-    query_type = query_content.get('type')
-    return jsonify(route_query(q, query_type))
+    query_domain = query_content.get('domain')
+    return jsonify(route_query(q, query_domain))
 
 
-def route_query(q, query_type):
+def route_query(q, query_domain):
     return {
-        'paper': handle_paper_query(q),
-        'author': handle_author_query(q),
-    }.get(query_type, handle_paper_query(q))
+        'papers': handle_paper_query(q),
+        'authors': handle_author_query(q),
+    }.get(query_domain, handle_paper_query(q))
 
 
 def handle_author_query(q):
