@@ -1,5 +1,6 @@
 import sqlite3
 
+from fetch_scholar_data import fetch_citations
 from index_computation import compute_index
 from models.Author import Author
 from models.Paper import Paper
@@ -15,9 +16,10 @@ def initialize():
     print("Loading data..")
     load_models(cur)
     print("Done")
-    print("Computing index..")
-    compute_index()
-    print("Done")
+    fetch_citations()
+    # print("Computing index..")
+    # compute_index()
+    # print("Done")
 
 
 # imports the papers and authors in memory
