@@ -16,10 +16,10 @@ def initialize():
     print("Loading data..")
     load_models(cur)
     print("Done")
-    fetch_citations()
-    # print("Computing index..")
-    # compute_index()
-    # print("Done")
+    # fetch_citations()
+    print("Computing index..")
+    compute_index()
+    print("Done")
 
 
 # imports the papers and authors in memory
