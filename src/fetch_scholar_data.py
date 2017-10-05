@@ -29,5 +29,6 @@ def fetch_paper(paper):
     if len(querier.articles) > 0:
         num_citations = querier.articles[0]['num_citations']
         print(paper.id , "" , num_citations)
-        write_line = paper.id + ' ' + num_citations + "\n"
-        text_file.write(write_line)
+        print(paper.id , "" , num_citations, file = text_file)
+        #write_line = paper.id + ' ' + num_citations + "\n"
+        #text_file.write(write_line)
