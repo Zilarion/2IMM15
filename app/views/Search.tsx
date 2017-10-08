@@ -49,6 +49,7 @@ interface SearchProps {
 interface SearchState {
 	papers: Array<PaperType>
 	authors: Array<AuthorType>
+	loading: boolean
 }
 
 class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
@@ -56,7 +57,8 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		super();
 		this.state = {
 			papers: [],
-			authors: []
+			authors: [],
+			loading: false
 		};
 		this.onInputEnter = this.onInputEnter.bind(this);
 	}
@@ -102,10 +104,20 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 				authors: data.result
 			})
 		}
+
+		this.setState({
+			...this.state,
+			loading: false
+		})
 	}
 
 	queryData(postData: { query: string, domain: string }) {
 		console.log("Doing query: ", postData);
+		this.setState({
+			...this.state,
+			loading: true
+		});
+
 		$.ajax({
 			url: "/query",
 			type: "POST",
@@ -154,10 +166,14 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			);
 		else {
 			let searchResult;
-			if (params.domain === 'papers')
-				searchResult = <PaperList papers={this.state.papers}/>;
-			else if (params.domain === 'authors')
-				searchResult = <AuthorList authors={this.state.authors}/>;
+			if (this.state.loading) {
+				searchResult = <span>Loading...</span>
+			} else {
+				if (params.domain === 'papers')
+					searchResult = <PaperList papers={this.state.papers}/>;
+				else if (params.domain === 'authors')
+					searchResult = <AuthorList authors={this.state.authors}/>;
+			}
 
 			return (
 				<SearchContainer>
