@@ -1,4 +1,5 @@
 from flask import jsonify
+from fuzzywuzzy import process
 
 from index_computation import query
 from models.Data import Data
@@ -7,18 +8,31 @@ from models.Data import Data
 def handle_query(query_content):
     q = query_content.get('query')
     query_domain = query_content.get('domain')
+    if q is None:
+        return jsonify([])
     return jsonify(route_query(q, query_domain))
 
 
 def route_query(q, query_domain):
-    return {
-        'papers': handle_paper_query(q),
-        'authors': handle_author_query(q),
-    }.get(query_domain, handle_paper_query(q))
+    if query_domain == 'authors':
+        return handle_author_query(q)
+    if query_domain == 'papers':
+        return handle_paper_query(q)
 
 
 def handle_author_query(q):
-    return []
+    author_names = []
+    for key, author in Data.authors.items():
+        author_names.append(author.name)
+    matches = process.extract(q, author_names)
+
+    result = []
+    for record in matches:
+        json = dict()
+        json['name'] = record[0]
+        json['score'] = record[1]
+        result.append(json)
+    return result
 
 
 def handle_paper_query(q):

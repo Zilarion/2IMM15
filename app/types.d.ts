@@ -1,6 +1,8 @@
 type AuthorType = {
 	id: number,
 	name: string,
+	score?: number,
+	animTime: number,
 }
 
 type PaperType = {

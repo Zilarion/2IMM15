@@ -9,6 +9,7 @@ import {InputField} from "app/components/InputField";
 import {TopicList} from 'app/components/TopicList';
 import {TabSelector} from "../components/TabSelector";
 import {withRouter} from "react-router";
+import {AuthorList} from "../components/AuthorList";
 
 const CenterContainer = style.div`
 	position: relative;
@@ -47,13 +48,15 @@ interface SearchProps {
 
 interface SearchState {
 	papers: Array<PaperType>
+	authors: Array<AuthorType>
 }
 
 class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 	constructor(props: SearchProps) {
 		super();
 		this.state = {
-			papers: []
+			papers: [],
+			authors: []
 		};
 		this.onInputEnter = this.onInputEnter.bind(this);
 	}
@@ -79,18 +82,30 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 	}
 
 	handleQueryReply(data: any) {
+		console.log("Query result: ", data);
 		let urlParams = this.props.match.params;
+		const domain = urlParams.domain || 'papers';
 		if (data.query !== urlParams.query || data.domain !== urlParams.domain) {
-			const domain = urlParams.domain || 'papers';
 			this.props.history.push('/search/' + domain + '/' + data.query);
 		}
-		this.setState({
-			...this.state,
-			papers: data.papers
-		});
+
+		if (domain === 'papers') {
+			this.setState({
+				...this.state,
+				papers: data.result,
+				authors: []
+			});
+		} else if (domain === 'authors') {
+			this.setState({
+				...this.state,
+				papers: [],
+				authors: data.result
+			})
+		}
 	}
 
 	queryData(postData: { query: string, domain: string }) {
+		console.log("Doing query: ", postData);
 		$.ajax({
 			url: "/query",
 			type: "POST",
@@ -99,7 +114,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			success: (data) => {
 				// Handle the change
 				this.handleQueryReply({
-					papers: data,
+					result: data,
 					query: postData.query,
 					domain: postData.domain,
 				});
@@ -138,6 +153,12 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 				</SearchContainer>
 			);
 		else {
+			let searchResult;
+			if (params.domain === 'papers')
+				searchResult = <PaperList papers={this.state.papers}/>;
+			else if (params.domain === 'authors')
+				searchResult = <AuthorList authors={this.state.authors}/>;
+
 			return (
 				<SearchContainer>
 					<HeaderContainer>
@@ -150,7 +171,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 						]}/>
 					</HeaderContainer>
 					<ResultContainer>
-						<PaperList papers={this.state.papers}/>
+						{searchResult}
 						<TopicList topics={[{name: 'clustering'}]}/>
 					</ResultContainer>
 				</SearchContainer>
