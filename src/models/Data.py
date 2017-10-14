@@ -3,6 +3,7 @@ class Data:
     papers = dict()
     inverted_index = {}
     citations = {}
+    length = dict() # length of each doc thus dict
 
     def __init__(self):
         pass

@@ -1,5 +1,7 @@
 import json
 import math
+import language_model as lm
+
 from nltk import *
 from nltk.corpus import stopwords
 from models.Data import Data
@@ -7,6 +9,8 @@ from models.Data import Data
 
 def compute_index():
     loaded_index = dict()
+    result_length = dict()
+
     limit_id = 500
     try:
         with open('inverted_index.txt', 'r') as file:
@@ -33,27 +37,31 @@ def compute_index():
     print("Reconstructing inv index")
     final_index = {}
     for paper_id, index in loaded_index.items():
+        total_occurence = 0
         for word in index:
             if word not in final_index:
                 final_index[word] = dict()
             final_index[word][paper_id] = index[word]['0']
+            print("{paper_id} is ...".format(paper_id=paper_id))
+            total_occurence = total_occurence + index[word]['0']
+            result_length[paper_id] = total_occurence
     Data.inverted_index = final_index
+    Data.length = result_length
     print("Reconstructing inv index")
-
 
 # Calculating the term frequency for a single document
 def get_tf(document):
     tf = {}
-    tokenized_words = document.replace(',','')
+    tokenized_words = document.replace(',', '')
     tokenized_document = RegexpTokenizer(r'\w+').tokenize(tokenized_words.lower())
     filtered_words = [word for word in tokenized_document if word not in stopwords.words('english')]
+
     for j in filtered_words:
         if j in tf:
             tf[j] +=1
         else:
             tf[j] = 1
     return tf
-
 
 # Calculating the Document term frequency per document combined
 def get_document_tf(papers):
@@ -95,7 +103,6 @@ def query(q, idx, n):
             i = idf(term, idx, n)
             for doc in idx[term]:
                 score[doc] = idx[term][doc] * i
-
     result = []
 
     for x in [[r[0], r[1]] for r in zip(score.keys(), score.values())]:
@@ -106,7 +113,35 @@ def query(q, idx, n):
 
     return sorted_result
 
+def queryLM(q, idx, n):
+    LMscore = {}
+    collection_len = get_total_length()
 
+    for term in q.split():
+        term = term.lower()
+        if term in idx:
+            collection_frequency = 0;
+            for doc in idx[term]:
+                collection_frequency = collection_frequency + idx[term][doc]
+                doc_freq_term = idx[term][doc]
+                doc_len = Data.length[doc]
+                LMscore[doc] = (lm.GetScoreLM(collection_frequency, doc_freq_term, doc_len, collection_len))*100
+
+    result = []
+
+    for x in [[r[0], r[1]] for r in zip(LMscore.keys(), LMscore.values())]:
+        if x[1] > 0:
+            result.append([x[1], x[0]])
+
+    sorted_result = sorted(result, key=lambda t: t[0] * -1)
+
+    return sorted_result
+
+def get_total_length():
+    total = 0
+    for paper_id, length_paper in Data.length.items():
+        total = total + Data.length[paper_id]
+    return total
 #print_results(results,10)
 
 #for k, v in idx.items():

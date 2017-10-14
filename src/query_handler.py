@@ -1,7 +1,7 @@
 from flask import jsonify
 from fuzzywuzzy import process
 
-from index_computation import query
+from index_computation import query, queryLM
 from models.Data import Data
 
 
@@ -37,9 +37,13 @@ def handle_author_query(q):
 
 def handle_paper_query(q):
     ranking = query(q, Data.inverted_index, len(Data.papers))
+    # ranking based on language model
+    # TODO to incorporate both rankings
+    # ranking = queryLM(q, Data.inverted_index, len(Data.papers))
     result = []
     count = 0
     # TODO pagination
+    #    for paper_id, rank_value  in ranking.items():
     for rank_value, paper_id in ranking:
         paper = Data.papers[paper_id]
         authors = paper.authors
