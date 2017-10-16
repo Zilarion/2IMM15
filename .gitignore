@@ -149,3 +149,6 @@ ENV/
 .ropeproject
 
 /inverted_index.txt
+
+#temp folder
+temp/

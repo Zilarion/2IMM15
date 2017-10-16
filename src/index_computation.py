@@ -1,17 +1,20 @@
 import json
 import math
 import language_model as lm
-
 from nltk import *
 from nltk.corpus import stopwords
 from models.Data import Data
+from topic_model import *
 
 
 def compute_index():
     loaded_index = dict()
     result_length = dict()
+    docs_tokens = dict()    # necessary for LDA/LSA
+    gensim_dict = None      # necessary for LDA/LSA
+    corpus = None           # necessary for LDA/LSA
 
-    limit_id = 500
+    limit_id = 5
     try:
         with open('inverted_index.txt', 'r') as file:
             data = file.readlines()
@@ -19,20 +22,30 @@ def compute_index():
                 line_data = dict(json.loads(line.rstrip()))
                 if line_data["id"] < limit_id:
                     loaded_index[line_data["id"]] = line_data["inverted_index"]
+            print("LOADING/READING")
+            gensim_dict = get_gensim_dict()
+            corpus = get_corpus()
+
     except FileNotFoundError:
         print("No inverted index file yet.. computing")
 
     with open('inverted_index.txt', 'a') as file:
+        flag = False
+
         for i, paper in Data.papers.items():
             if paper.id not in loaded_index and paper.id < limit_id:
                 document = [paper.title + "\n" + paper.paper_text]
-                inv_index = get_inv_ind(document)
-
+                inv_index = get_inv_ind(document, docs_tokens, paper.id)
+                flag = True
                 # write resulting data
                 result = {'id': paper.id, 'inverted_index': inv_index}
                 json.dump(result, file)
                 file.write("\n")
                 print("Computing inverted index for", paper.id, "out of", len(Data.papers))
+
+        if flag and docs_tokens:
+            save_gensim_dict(filter_tokens(docs_tokens))
+        print("WRITING")
 
     print("Reconstructing inv index")
     final_index = {}
@@ -42,12 +55,16 @@ def compute_index():
             if word not in final_index:
                 final_index[word] = dict()
             final_index[word][paper_id] = index[word]['0']
-            print("{paper_id} is ...".format(paper_id=paper_id))
             total_occurence = total_occurence + index[word]['0']
             result_length[paper_id] = total_occurence
+
+    if corpus and gensim_dict:
+        do_lda_modelling(corpus, gensim_dict, 10)
+
     Data.inverted_index = final_index
     Data.length = result_length
     print("Reconstructing inv index")
+
 
 # Calculating the term frequency for a single document
 def get_tf(document):
@@ -58,10 +75,11 @@ def get_tf(document):
 
     for j in filtered_words:
         if j in tf:
-            tf[j] +=1
+            tf[j] += 1
         else:
             tf[j] = 1
     return tf
+
 
 # Calculating the Document term frequency per document combined
 def get_document_tf(papers):
@@ -73,24 +91,33 @@ def get_document_tf(papers):
 
 
 # Creating the inverted index for tf_idf
-def get_inv_ind(papers):
+def get_inv_ind(papers, docs_tokens, paper_id):
     inverted_index = {}
     for i, document in enumerate(papers):
         tokenized_words = document.replace(',', '')
         tokenized_paper = RegexpTokenizer(r'\w+').tokenize(tokenized_words.lower())
         filtered_words = [word for word in tokenized_paper if word not in stopwords.words('english')]
+        docs_tokens[paper_id] = filtered_words  # necessary for LDA/LSA
+
         for j in filtered_words:
             if j in inverted_index:
                 if i in inverted_index[j]:
                     inverted_index[j][i] += 1
+                    # if inverted_index[j] not in docs_tokens[paper_id]:
+                    #     only words with frequency highger than 1
+                    # docs_tokens[paper_id].append(inverted_index[j])
                 else:
                     inverted_index[j][i] = 1
+            # for word, freq in words_freq_collection:
+            #     if j in word:
+
             else:
-                inverted_index[j] = {i:1}
+                inverted_index[j] = {i: 1}
+    # list_words(docs_tokens)
     return inverted_index
 
 
-# Simple idf calculation
+# Simple idf calculation with normalization
 def idf(term, idx, n):
     return math.log(1 + (float(n) / len(idx[term])))
 
@@ -113,43 +140,35 @@ def query(q, idx, n):
 
     return sorted_result
 
+
 def queryLM(q, idx, n):
     LMscore = {}
     collection_len = get_total_length()
+    result = list()
 
     for term in q.split():
         term = term.lower()
         if term in idx:
-            collection_frequency = 0;
+            collection_frequency = 0
             for doc in idx[term]:
                 collection_frequency = collection_frequency + idx[term][doc]
                 doc_freq_term = idx[term][doc]
                 doc_len = Data.length[doc]
-                LMscore[doc] = (lm.GetScoreLM(collection_frequency, doc_freq_term, doc_len, collection_len))*100
-
-    result = []
+                LMscore[doc] = (lm.GetScoreLM(collection_frequency, doc_freq_term, doc_len, collection_len)) * 100
 
     for x in [[r[0], r[1]] for r in zip(LMscore.keys(), LMscore.values())]:
         if x[1] > 0:
             result.append([x[1], x[0]])
 
     sorted_result = sorted(result, key=lambda t: t[0] * -1)
-
     return sorted_result
+
+
+result = []
+
 
 def get_total_length():
     total = 0
     for paper_id, length_paper in Data.length.items():
         total = total + Data.length[paper_id]
     return total
-#print_results(results,10)
-
-#for k, v in idx.items():
-#    print(k, v)
-
-#print(set(idx['D']).intersection(set(idx['exists'])).intersection(set(idx['Source'])))
-
-#get_tf(papers)
-#dtf = get_document_tf(papers)
-
-
