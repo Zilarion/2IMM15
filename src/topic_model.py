@@ -57,10 +57,11 @@ def get_corpus():
 
 
 def do_lda_modelling(corpus, dictionary, topcnr= 50):
-    lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=topcnr, update_every=0, chunksize=3500, passes=1)
-    print("Printing topics")
-    print(lda.print_topics(10))
+    lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=topcnr, update_every=0, chunksize=3500, passes=5)
+    save_lda_model(lda)
     return lda
+
+
 
 
 # filtering all the tokens, with 1 character/turns out there are many of them
@@ -70,3 +71,27 @@ def filter_tokens(docs_tokens):
     for docId, tokens in docs_tokens.items():
         filtr_docs_tokens[docId] = [token for token in tokens if len(token) > 1]
     return filtr_docs_tokens
+
+
+def save_lda_model(lda_model):
+    if os.path.exists(os.path.join(TEMP_FOLDER)):
+        try:
+            lda_model = lda_model.save(os.path.join(TEMP_FOLDER, 'lda_model.lda'))
+            print("Saving lda model.. ")
+            return lda_model
+        except Exception as ex:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(ex).__name__, ex.args)
+            print(message)
+
+
+def load_ldamodel():
+    if os.path.exists(os.path.join(TEMP_FOLDER, 'lda_model.lda')):
+        try:
+            lda_model = models.LdaModel.load(os.path.join(TEMP_FOLDER, 'lda_model.lda'))
+            print("Loading lda model.. ")
+            return lda_model
+        except Exception as ex:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(ex).__name__, ex.args)
+            print(message)
