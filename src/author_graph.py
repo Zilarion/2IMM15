@@ -20,14 +20,14 @@ class authorgraph:
                     self.edges[pair[0]][pair[1]] = 0
                 self.edges[pair[0]][pair[1]] += 1 #paper.influence
         self.graph()
-        print(self.paths)
+    #    print(self.paths)
     #    self.cluster(self.path)
 
     def graph(self):
         G = nx.Graph(self.edges)
         self.path = all_pairs_dijkstra_path_length(G)
-        for i in self.path:
-            print(i)
+        #for i in self.path:
+            #print(i)
 
 
     # def cluster(self, path):
