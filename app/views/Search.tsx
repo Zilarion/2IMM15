@@ -10,6 +10,7 @@ import {TopicList} from 'app/components/TopicList';
 import {TabSelector} from "../components/TabSelector";
 import {withRouter} from "react-router";
 import {AuthorList} from "../components/AuthorList";
+import {LoadingIndicator} from "../components/LoadingIndicator";
 
 const CenterContainer = style.div`
 	position: relative;
@@ -167,7 +168,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		else {
 			let searchResult;
 			if (this.state.loading) {
-				searchResult = <span>Loading...</span>
+				searchResult = <LoadingIndicator />
 			} else {
 				if (params.domain === 'papers')
 					searchResult = <PaperList papers={this.state.papers}/>;

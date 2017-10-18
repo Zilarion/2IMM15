@@ -5,7 +5,7 @@ from index_computation import compute_index
 from models.Author import Author
 from models.Paper import Paper
 from models.Data import Data
-from author_graph import authorgraph
+from author_graph import AuthorGraph
 
 
 # Initializes everything by loading data in memory
@@ -23,6 +23,7 @@ def initialize():
     print("Loaded inverted index")
     print("Done")
     create_author_graph()
+
 
 # imports the papers and authors in memory
 def load_models(cursor):
@@ -45,4 +46,4 @@ def load_models(cursor):
 
 
 def create_author_graph():
-    authorgraph().load()
+    AuthorGraph().load()

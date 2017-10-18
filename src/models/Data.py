@@ -1,10 +1,11 @@
 class Data:
     authors = dict()
     papers = dict()
-    inverted_index = {}
-    citations = {}
-    length = dict() # length of each doc thus dict
     papers_topic_label = dict()
+    inverted_index = dict()
+    citations = dict()
+    author_clusters = dict()  # dictionary from cluster nr -> author.id's in the cluster
+    length = dict()  # length of each doc thus dict
 
     def __init__(self):
         pass
