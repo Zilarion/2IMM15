@@ -21,21 +21,22 @@ const CenterContainer = style.div`
 `;
 
 const DataContainer = style.div`
-	width: 70%;
+	width: 80%;
 	display: inline-block;
-	float: left;
+	float: right;
 `;
 
 const TopicContainer = style.div`
-	width: 30%;
+	width: 20%;
 	display: inline-block;
-	float: right;
+	float: left;
 `;
 
 
 const InputContainer = style.div`
 	width: 600px;
-	margin: 0 auto;
+	height: 50px;
+	display: inline-block;
 `;
 
 const SearchContainer = style.div`
@@ -44,7 +45,7 @@ const SearchContainer = style.div`
 `;
 
 const HeaderContainer = style.div`
-	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
+	width: 100%;
 	padding: ${(props: any) => props.theme.margins.small};
 	padding-bottom: 0px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -58,8 +59,9 @@ const ResultContainer = style.div`
 
 const ResultHeader = style.div`
 	text-align: left;
-	padding: ${(props: any) => props.theme.margins.small};
-	padding-bottom: 0px;
+	border-bottom: 1px solid ${(props: any) => props.theme.colors.divider};
+	padding: ${(props: any) => props.theme.margins.small} ${(props: any) => props.theme.margins.medium};
+	padding-bottom: ${(props: any) => props.theme.margins.tiny};
 	font-size: 12px;
 	color: ${(props: any) => props.theme.colors.subTitle};
 `;
@@ -216,18 +218,18 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 				if (params.domain === 'papers')
 					searchResult = (<div>
 						{resultHeader}
+						{topics}
 						<DataContainer>
 							<PaperList papers={this.state.papers}/>
 						</DataContainer>
-						{topics}
 					</div>);
 				else if (params.domain === 'authors')
 					searchResult = (<div>
 						{resultHeader}
+						{topics}
 						<DataContainer>
 							<AuthorList authors={this.state.authors}/>
 						</DataContainer>
-						{topics}
 					</div>);
 			}
 

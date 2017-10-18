@@ -7,6 +7,7 @@ import {LoadingIndicator} from "../components/LoadingIndicator";
 import {PaperList} from "../components/PaperList";
 import {AuthorList} from "../components/AuthorList";
 import {Link} from "react-router-dom";
+import {AuthorItem} from "../components/AuthorItem";
 
 
 const StyledRouterLink = style(Link)`
@@ -16,10 +17,17 @@ const StyledRouterLink = style(Link)`
 	color: ${(props: any) => props.theme.colors.hover};
 }`;
 
+const DataContainer = style.div`
+	width: calc(100% - ${(props: any) => props.theme.margins.smallx4});
+	padding: ${(props: any) => props.theme.margins.small};
+	margin: ${(props: any) => props.theme.margins.small};
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	display: inline-block;
+`;
+
 const HeaderContainer = style.div`
 	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
 	padding: ${(props: any) => props.theme.margins.small};
-	padding-bottom: 0px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: ${(props: any) => props.theme.colors.header};
 `;
@@ -38,7 +46,7 @@ const PaperContainer = style.div`
 
 const DataHeader = style.h4`
 	margin: 0px;
-	margin-left: ${(props: any) => props.theme.margins.small};
+	margin-left: ${(props: any) => props.theme.margins.medium};
 `;
 
 interface AuthorProps {
@@ -98,16 +106,23 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 				<div>
 					<HeaderContainer>
 						<StyledRouterLink to={'/search/authors/' + this.state.author.name}>{'<'} to search</StyledRouterLink>
-						<h2>{this.state.author.name}</h2>
 					</HeaderContainer>
-					<PaperContainer>
-						<DataHeader>papers written:</DataHeader>
-						<PaperList papers={this.state.author.papers} />
-					</PaperContainer>
-					<AuthorContainer>
-						<DataHeader>co-authors:</DataHeader>
-						<AuthorList authors={this.state.author.coAuthors} />
-					</AuthorContainer>
+					<DataContainer>
+						<AuthorItem
+							id={this.state.author.id}
+							name={this.state.author.name}
+							coAuthors={[]}
+							animTime={0}
+						/>
+						<PaperContainer>
+							<DataHeader>papers written:</DataHeader>
+							<PaperList papers={this.state.author.papers} />
+						</PaperContainer>
+						<AuthorContainer>
+							<DataHeader>co-authors:</DataHeader>
+							<AuthorList authors={this.state.author.coAuthors} />
+						</AuthorContainer>
+					</DataContainer>
 				</div>
 			);
 

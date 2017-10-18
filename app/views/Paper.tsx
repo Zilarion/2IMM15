@@ -7,6 +7,7 @@ import {LoadingIndicator} from "../components/LoadingIndicator";
 import {AuthorList} from "../components/AuthorList";
 import {PaperList} from "../components/PaperList";
 import {Link} from "react-router-dom";
+import {PaperItem} from "../components/PaperItem";
 
 
 const StyledRouterLink = style(Link)`
@@ -19,17 +20,8 @@ const StyledRouterLink = style(Link)`
 const HeaderContainer = style.div`
 	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
 	padding: ${(props: any) => props.theme.margins.small};
-	padding-bottom: 0px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: ${(props: any) => props.theme.colors.header};
-`;
-
-const StyledLink = style.a`
-	color: ${(props: any) => props.theme.colors.accent};
-	text-decoration: none;
-	&:hover {
-		color: ${(props: any) => props.theme.colors.hover};
-	}
 `;
 
 const DataContainer = style.div`
@@ -37,6 +29,7 @@ const DataContainer = style.div`
 	padding: ${(props: any) => props.theme.margins.small};
 	margin: ${(props: any) => props.theme.margins.small};
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	display: inline-block;
 `;
 
 const AuthorContainer = style.div`
@@ -45,23 +38,14 @@ const AuthorContainer = style.div`
 	float: left;
 `;
 
-const Info = style.span`
-	color: ${(props: any) => props.theme.colors.subTitle};
-`;
-
 const PaperContainer = style.div`
 	display: inline-block;
 	width: 50%;
 	float: right;
 `;
 
-const InfoHeader = style.h4`
-	margin: ${(props: any) => props.theme.margins.small};
-	margin-left: 0px;
-`;
-
 const DataHeader = style.h4`
-	margin: ${(props: any) => props.theme.margins.small};
+	margin: ${(props: any) => props.theme.margins.medium};
 `;
 
 interface PaperProps {
@@ -123,27 +107,26 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 				<div>
 					<HeaderContainer>
 						<StyledRouterLink to={'/search/papers/' + this.state.paper.title}>{'<'} to search</StyledRouterLink>
-						<h2>{this.state.paper.title} ({this.state.paper.year})</h2>
 					</HeaderContainer>
 					<DataContainer>
-						<InfoHeader>Paper information:</InfoHeader>
-						<table>
-							<tbody>
-								<tr><td><Info>Title</Info></td><td>{this.state.paper.title}</td></tr>
-								<tr><td><Info>Year</Info></td><td>{this.state.paper.year}</td></tr>
-								<tr><td><Info>Link</Info></td><td><StyledLink target="_blank" href={this.state.paper.link}>View paper</StyledLink></td></tr>
-								<tr><td><Info>Topic</Info></td><td>{this.state.paper.topic}</td></tr>
-							</tbody>
-						</table>
+						<PaperItem
+							id={this.state.paper.id}
+							title={this.state.paper.title}
+							authors={this.state.paper.authors}
+							link={this.state.paper.link}
+							year={this.state.paper.year}
+							topic={this.state.paper.topic}
+							animTime={0}
+						/>
+						<AuthorContainer>
+							<DataHeader>Authors:</DataHeader>
+							<AuthorList authors={this.state.paper.authors} />
+						</AuthorContainer>
+						<PaperContainer>
+							<DataHeader>Related papers:</DataHeader>
+							<PaperList papers={[]} />
+						</PaperContainer>
 					</DataContainer>
-					<AuthorContainer>
-						<DataHeader>Authors:</DataHeader>
-						<AuthorList authors={this.state.paper.authors} />
-					</AuthorContainer>
-					<PaperContainer>
-						<DataHeader>Related papers:</DataHeader>
-						<PaperList papers={[]} />
-					</PaperContainer>
 				</div>
 			);
 

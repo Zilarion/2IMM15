@@ -3,7 +3,17 @@ import styled, {keyframes} from 'styled-components';
 
 import {Link} from "react-router-dom";
 
-const StyledLink = styled(Link)`
+
+const StyledLink = styled.a`
+	text-decoration: none;
+	font-size: 10px;
+	color: ${(props: any) => props.theme.colors.link};
+	&:hover {
+		color: ${(props: any) => props.theme.colors.hover};
+	}
+`;
+
+const StyledRouterLink = styled(Link)`
 	text-decoration: none;
 	color: ${(props: any) => props.theme.colors.accent};
 	&:hover {
@@ -23,11 +33,13 @@ const fadeIn = keyframes`
 
 const PaperItemContainer = styled.div`
     text-align: left;
-    display: relative;
-    padding: ${(props: any) => props.theme.margins.small};
-    margin: ${(props: any) => props.theme.margins.small};
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    padding: ${(props: any) => props.theme.margins.medium};
 		animation: ${fadeIn} ${(props: any) => { return props.animTime }}ms linear;
+		
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
 `;
 
 const SubTitleContainer = styled.div`
@@ -36,15 +48,35 @@ const SubTitleContainer = styled.div`
 `;
 
 const PaperScoreContainer = styled.div`
-	float: right;
+	position: absolute;
+	display: inline-block;
+	right: ${(props: any) => props.theme.margins.small};
 	font-size: 10px;
 	color: ${(props: any) => props.theme.colors.subTitle};
 `;
 
 const DataContainer = styled.div`
+  display: inline-block;
+  width: calc(100% - 83px);
+`;
+
+const IconContainer = styled.div`
 	display: inline-block;
-	width: 100%;
-  display: inline;
+	float: left;
+	margin-right: ${(props: any) => props.theme.margins.small};
+	background-color: ${(props: any) => props.theme.colors.divider};
+	color:  ${(props: any) => props.theme.colors.white};
+	
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	
+	padding: ${(props: any) => props.theme.margins.tiny};
+	border-radius: 25px;
+	width: 28px;
+	height: 28px;
 `;
 
 const PaperItem = (props: PaperType) => {
@@ -61,8 +93,12 @@ const PaperItem = (props: PaperType) => {
 	return (
 		<PaperItemContainer animTime={props.animTime}>
 			<PaperScoreContainer>{paperScore}</PaperScoreContainer>
+			<IconContainer>
+				<i className="material-icons">description</i>
+			</IconContainer>
 			<DataContainer>
-				<StyledLink to={'/paper/' + props.id}>{props.title} ({props.year})</StyledLink><br />
+				<StyledRouterLink to={'/paper/' + props.id}>{props.title} ({props.year})</StyledRouterLink><br />
+				<StyledLink target="_blank" href={props.link}>{props.link}</StyledLink><br />
 				<SubTitleContainer>{authorString}</SubTitleContainer>
 			</DataContainer>
 		</PaperItemContainer>

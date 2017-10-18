@@ -6,13 +6,12 @@ const TopicListContainer = style.div`
     width: calc(100% - ${(props: any) => props.theme.margins.smallx4});
     margin: ${(props: any) => props.theme.margins.small};
     padding: ${(props: any) => props.theme.margins.small};
-    background-color: ${(props: any) => props.theme.colors.header};
-  	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 `;
 
-const HeaderTopic = style.h4`
-    text-align: center;
-		margin: ${(props: any) => props.theme.margins.small} 0px;
+const HeaderTopic = style.span`
+	display: inline-block;
+	width: 100%;
+	color: ${(props: any) => props.theme.colors.accent2};
 `;
 
 interface TopicListProps {

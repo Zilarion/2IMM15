@@ -3,8 +3,9 @@ import styled, {keyframes} from 'styled-components';
 import {Link} from "react-router-dom";
 
 
-const StyledLink = styled(Link)`
+const StyledRouterLink = styled(Link)`
 	text-decoration: none;
+	width: 100%;
 	color: ${(props: any) => props.theme.colors.accent};
 	&:hover {
 		color: ${(props: any) => props.theme.colors.hover};
@@ -22,17 +23,22 @@ const fadeIn = keyframes`
 `;
 
 const AuthorScoreContainer = styled.div`
-	float: right;
+	position: absolute;
+	display: inline-block;
+	right: ${(props: any) => props.theme.margins.small};
 	font-size: 10px;
 	color: ${(props: any) => props.theme.colors.subTitle};
 `;
 
 const AuthorItemContainer = styled.div`
     text-align: left;
-    padding: ${(props: any) => props.theme.margins.small};
-    margin: ${(props: any) => props.theme.margins.small};
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    padding: ${(props: any) => props.theme.margins.medium};
 		animation: ${fadeIn} ${(props: any) => { return props.animTime }}ms linear;
+		
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
 `;
 
 const SubTitleContainer = styled.div`
@@ -41,15 +47,32 @@ const SubTitleContainer = styled.div`
 `;
 
 const DataContainer = styled.div`
-	display: inline-block;
-	width: 100%;
-  display: inline;
+  display: inline-block;
+  width: calc(100% - 83px);
 `;
 
+const IconContainer = styled.div`
+	display: inline-block;
+	float: left;
+	margin-right: ${(props: any) => props.theme.margins.small};
+	background-color: ${(props: any) => props.theme.colors.divider};
+	color:  ${(props: any) => props.theme.colors.white};
+	
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	
+	padding: ${(props: any) => props.theme.margins.tiny};
+	border-radius: 25px;
+	width: 28px;
+	height: 28px;
+`;
 
 const AuthorItem = (props: AuthorType) => {
 	let coAuthors;
-	if (props.coAuthors) {
+	if (props.coAuthors && props.coAuthors.length > 0) {
 		let authorArrayString = props.coAuthors.map((coauthor, index: number) => {
 			if (index === 5) {
 				return 'and ' + (props.coAuthors.length - 5) + ' more.';
@@ -65,8 +88,11 @@ const AuthorItem = (props: AuthorType) => {
 	return (
 		<AuthorItemContainer animTime={props.animTime}>
 			<AuthorScoreContainer>{authorScore}</AuthorScoreContainer>
+			<IconContainer>
+				<i className="material-icons">person</i>
+			</IconContainer>
 			<DataContainer>
-				<StyledLink to={'/author/' + props.id}>{props.name}</StyledLink><br />
+				<StyledRouterLink to={'/author/' + props.id}>{props.name}</StyledRouterLink>
 				{coAuthors}
 			</DataContainer>
 		</AuthorItemContainer>
