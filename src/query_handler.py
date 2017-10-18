@@ -36,7 +36,7 @@ def handle_authors_query(q):
     for key, author in Data.authors.items():
         author_names.append(author.name)
         name_dict[author.name] = author
-    matches = process.extract(q, author_names, limit=len(Data.authors.items()))
+    matches = process.extractBests(q, author_names, limit=len(Data.authors.items()), score_cutoff=80)
 
     result = []
     count = 0

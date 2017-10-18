@@ -121,11 +121,11 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 							/>
 						</PropertiesContainer>
 						<PaperContainer>
-							<DataHeader>papers written:</DataHeader>
+							<DataHeader>Papers written:</DataHeader>
 							<PaperList papers={this.state.author.papers} />
 						</PaperContainer>
 						<AuthorContainer>
-							<DataHeader>co-authors:</DataHeader>
+							<DataHeader>Co-authors:</DataHeader>
 							<AuthorList authors={this.state.author.coAuthors} />
 						</AuthorContainer>
 					</DataContainer>

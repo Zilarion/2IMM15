@@ -20,7 +20,7 @@ def compute_index():
     papers_topic_label = dict() #topicId - topic Label
 
 
-    limit_id = 100
+    limit_id = 10000000
     min_limit = 0
 
 

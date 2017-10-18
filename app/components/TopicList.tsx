@@ -21,25 +21,29 @@ interface TopicListProps {
 const TopicList = (props: TopicListProps) => {
 	let topics;
 	if (props.topics.length == 0)
-		topics = <span>No related topics.</span>
+		return (<div></div>);
 	else {
 		topics = props.topics.map((topic: TopicType, index: number) => {
 			return (
 				<tr key={index}>
-					<td>({topic.number})</td><td>{topic.label}</td>
+					<td>({topic.number})</td>
+					<td>{topic.label}</td>
 				</tr>
 			);
 		});
-		topics = <table><tbody>{topics}</tbody></table>;
-	}
+		topics = (<table>
+			<tbody>{topics}</tbody>
+		</table>);
 
-	// Render
-	return (
-		<TopicListContainer>
-			<HeaderTopic>Topics</HeaderTopic>
-			{topics}
-		</TopicListContainer>
-	);
+
+		// Render
+		return (
+			<TopicListContainer>
+				<HeaderTopic>Topics</HeaderTopic>
+				{topics}
+			</TopicListContainer>
+		);
+	}
 };
 
 export { TopicList };
