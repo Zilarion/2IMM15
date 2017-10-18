@@ -5,6 +5,13 @@ type AuthorType = {
 	animTime: number,
 }
 
+
+type TopicType = {
+	number: number,
+	label: string
+}
+
+
 type PaperType = {
 	id: number,
 	title: string,
@@ -16,3 +23,4 @@ type PaperType = {
 
 
 declare module 'styled-components'
+declare module 'react-loading'

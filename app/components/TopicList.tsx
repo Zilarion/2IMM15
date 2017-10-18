@@ -4,22 +4,30 @@ import style      from 'styled-components';
 const TopicListContainer = style.div`
     text-align: center;
     float: right;
-    width: 20%;
+    width: calc(20% - ${(props: any) => props.theme.margins.smallx2});
+    padding: ${(props: any) => props.theme.margins.small};
+    padding-top: 0px;
+    background-color: ${(props: any) => props.theme.colors.header};
 `;
-
-
-type TopicType = {
-	name: string,
-}
 
 interface TopicListProps {
 	topics: Array<TopicType>
 }
 
 const TopicList = (props: TopicListProps) => {
-	const topics = props.topics.map((topic, index: number) => {
-		return <span key={index}>{topic.name}</span>
-	});
+	let topics;
+	if (props.topics.length == 0)
+		topics = <span>No related topics.</span>
+	else {
+		topics = props.topics.map((topic: TopicType, index: number) => {
+			return (
+				<div key={index}>
+					<span>({topic.number}) {topic.label}</span>
+					<br/>
+				</div>
+			);
+		});
+	}
 
 	// Render
 	return (

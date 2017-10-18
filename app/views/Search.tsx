@@ -27,7 +27,7 @@ const InputContainer = style.div`
 
 const SearchContainer = style.div`
 	height: 100%;
-	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
+	width: 100%;
 `;
 
 const HeaderContainer = style.div`
@@ -50,6 +50,7 @@ interface SearchProps {
 interface SearchState {
 	papers: Array<PaperType>
 	authors: Array<AuthorType>
+	topics: Array<TopicType>
 	loading: boolean
 }
 
@@ -59,6 +60,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		this.state = {
 			papers: [],
 			authors: [],
+			topics: [],
 			loading: false
 		};
 		this.onInputEnter = this.onInputEnter.bind(this);
@@ -95,14 +97,16 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		if (domain === 'papers') {
 			this.setState({
 				...this.state,
-				papers: data.result,
+				papers: data.result.papers,
+				topics: data.result.topics,
 				authors: []
 			});
 		} else if (domain === 'authors') {
 			this.setState({
 				...this.state,
 				papers: [],
-				authors: data.result
+				authors: data.result.authors,
+				topics: []
 			})
 		}
 
@@ -171,9 +175,17 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 				searchResult = <LoadingIndicator />
 			} else {
 				if (params.domain === 'papers')
-					searchResult = <PaperList papers={this.state.papers}/>;
+					searchResult = (<div>
+						<PaperList papers={this.state.papers}/>
+						<TopicList topics={this.state.topics}/>
+					</div>);
 				else if (params.domain === 'authors')
-					searchResult = <AuthorList authors={this.state.authors}/>;
+					searchResult = (<div>
+						<AuthorList authors={this.state.authors}/>
+						<TopicList topics={this.state.topics}/>
+					</div>);
+
+
 			}
 
 			return (
@@ -189,7 +201,6 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 					</HeaderContainer>
 					<ResultContainer>
 						{searchResult}
-						<TopicList topics={[{name: 'clustering'}]}/>
 					</ResultContainer>
 				</SearchContainer>
 			);

@@ -32,7 +32,7 @@ def handle_author_query(q):
         json['name'] = record[0]
         json['score'] = record[1]
         result.append(json)
-    return result
+    return {'authors': result}
 
 
 def handle_paper_query(q):
@@ -41,6 +41,7 @@ def handle_paper_query(q):
     # TODO to incorporate both rankings
     # ranking = queryLM(q, Data.inverted_index, len(Data.papers))
     result = []
+    topics = {}
     count = 0
     # TODO pagination
     #    for paper_id, rank_value  in ranking.items():
@@ -53,7 +54,19 @@ def handle_paper_query(q):
         json = paper.to_json()
         json['score'] = rank_value
         result.append(json)
+        topics = update_topics(topics, paper_id)
         count += 1
         if count > 20:
             break
-    return result
+    return {'papers': result, 'topics': [v for v in topics.values()]}
+
+
+def update_topics(old_topics, paper_id):
+    new_topics = old_topics
+    topic_id = Data.papers_topic_label[paper_id]
+
+    if topic_id in new_topics:
+        new_topics[topic_id]['number'] += 1
+    else:
+        new_topics[topic_id] = {'number': 1, 'label': str(topic_id)}
+    return new_topics
