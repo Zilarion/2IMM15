@@ -1,5 +1,6 @@
 from gensim import corpora, models
 from gensim.models import CoherenceModel
+from gensim.models import LdaModel
 import matplotlib.pyplot as plt
 import os
 
@@ -116,8 +117,11 @@ def label_doc(doc_lda_result):
 def evaluate_graph(lda, corpus, dictionary, limit=50):
 
     c_v = []
+    lm_list = []
     for num_topics in range(1, limit):
-        cm = CoherenceModel(model=lda, corpus=corpus, dictionary=dictionary, coherence='u_mass')
+        lm = LdaModel(corpus=corpus, num_topics=num_topics, id2word=dictionary)
+        lm_list.append(lm)
+        cm = CoherenceModel(model=lm, corpus=corpus, dictionary=dictionary, coherence='u_mass')
         c_v.append(cm.get_coherence())
 
     # Show graph
@@ -128,5 +132,5 @@ def evaluate_graph(lda, corpus, dictionary, limit=50):
     plt.legend(("c_v"), loc='best')
     plt.show()
 
-    return c_v
+    return lm_list
 

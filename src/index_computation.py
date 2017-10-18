@@ -18,9 +18,8 @@ def compute_index():
     collection_bow = dict()
     papers_topic_label = dict() #topicId - topic Label
 
-    limit_id = 6604
-    min_limit = 3464
-    limit_id = 10
+
+    limit_id = 100
     min_limit = 0
 
 
@@ -72,7 +71,7 @@ def compute_index():
     # if gensim_dict and corpus retrieved/created
     # do lda modelling
     if corpus and gensim_dict:
-        do_lda_modelling(corpus, gensim_dict, 5)
+        do_lda_modelling(corpus, gensim_dict, 50)
 
     # if lda modelling is not yet done, and all collection bow is read successfully
     # create gensim_dict, corpus and lda based on the file read
@@ -80,11 +79,11 @@ def compute_index():
         save_gensim_dict(collection_bow)
         gensim_dict = get_gensim_dict()
         corpus = get_corpus()
-        do_lda_modelling(corpus, gensim_dict, 5)
+        do_lda_modelling(corpus, gensim_dict, 50)
 
     if load_ldamodel():
         lda_obj = load_ldamodel()
-        pprint(lda_obj.print_topics(num_topics=5, num_words=10))
+        pprint(lda_obj.print_topics(num_topics=50, num_words=10))
         if bow: # if the docs are just indexed - bow should not be empty
             # doc_bow = [doc_words for docId, doc_words in bow.items()]
             gensim_dict = get_gensim_dict()
