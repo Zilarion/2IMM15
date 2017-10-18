@@ -6,6 +6,9 @@ import {Link} from "react-router-dom";
 const StyledLink = styled(Link)`
 	text-decoration: none;
 	color: ${(props: any) => props.theme.colors.accent};
+	&:hover {
+		color: ${(props: any) => props.theme.colors.hover};
+	}
 `;
 
 const fadeIn = keyframes`
@@ -16,6 +19,12 @@ const fadeIn = keyframes`
   to {
     opacity: 1;
   }
+`;
+
+const AuthorScoreContainer = styled.div`
+	float: right;
+	font-size: 10px;
+	color: ${(props: any) => props.theme.colors.subTitle};
 `;
 
 const AuthorItemContainer = styled.div`
@@ -31,6 +40,13 @@ const SubTitleContainer = styled.div`
 	font-size: 12px;
 `;
 
+const DataContainer = styled.div`
+	display: inline-block;
+	width: 100%;
+  display: inline;
+`;
+
+
 const AuthorItem = (props: AuthorType) => {
 	let coAuthors;
 	if (props.coAuthors) {
@@ -44,12 +60,15 @@ const AuthorItem = (props: AuthorType) => {
 		const coAuthorString = authorArrayString.filter((item) => typeof item !== 'undefined').join(', ');
 		coAuthors = <SubTitleContainer>Worked with: {coAuthorString}</SubTitleContainer>;
 	}
-	let authorScore = props.score ? '(' + props.score.toFixed(2) + ')' : '';
+	let authorScore = props.score ? props.score.toFixed(2) : '';
 
 	return (
 		<AuthorItemContainer animTime={props.animTime}>
-			{authorScore} <StyledLink to={'/author/' + props.id}>{props.name}</StyledLink><br />
-			{coAuthors}
+			<AuthorScoreContainer>{authorScore}</AuthorScoreContainer>
+			<DataContainer>
+				<StyledLink to={'/author/' + props.id}>{props.name}</StyledLink><br />
+				{coAuthors}
+			</DataContainer>
 		</AuthorItemContainer>
 	);
 };

@@ -5,6 +5,16 @@ import {withRouter} from "react-router";
 import * as $ from 'jquery';
 import {LoadingIndicator} from "../components/LoadingIndicator";
 import {PaperList} from "../components/PaperList";
+import {AuthorList} from "../components/AuthorList";
+import {Link} from "react-router-dom";
+
+
+const StyledRouterLink = style(Link)`
+	text-decoration: none;
+	color: ${(props: any) => props.theme.colors.accent};
+	&:hover {
+	color: ${(props: any) => props.theme.colors.hover};
+}`;
 
 const HeaderContainer = style.div`
 	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
@@ -12,6 +22,23 @@ const HeaderContainer = style.div`
 	padding-bottom: 0px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: ${(props: any) => props.theme.colors.header};
+`;
+
+const AuthorContainer = style.div`
+	display: inline-block;
+	width: 50%;
+	float: right;
+`;
+
+const PaperContainer = style.div`
+	display: inline-block;
+	width: 50%;
+	float: left;
+`;
+
+const DataHeader = style.h4`
+	margin: 0px;
+	margin-left: ${(props: any) => props.theme.margins.small};
 `;
 
 interface AuthorProps {
@@ -54,9 +81,12 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 			}
 		});
 	}
-
 	componentWillMount() {
 		this.queryForUrl(this.props.match.params.id);
+	}
+
+	componentWillReceiveProps(nextProps: AuthorProps) {
+		this.queryForUrl(nextProps.match.params.id);
 	}
 
 	render() {
@@ -67,9 +97,17 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 			searchResult = (
 				<div>
 					<HeaderContainer>
+						<StyledRouterLink to={'/search/authors/' + this.state.author.name}>{'<'} to search</StyledRouterLink>
 						<h2>{this.state.author.name}</h2>
 					</HeaderContainer>
-					<PaperList papers={this.state.author.papers} />
+					<PaperContainer>
+						<DataHeader>papers written:</DataHeader>
+						<PaperList papers={this.state.author.papers} />
+					</PaperContainer>
+					<AuthorContainer>
+						<DataHeader>co-authors:</DataHeader>
+						<AuthorList authors={this.state.author.coAuthors} />
+					</AuthorContainer>
 				</div>
 			);
 

@@ -4,8 +4,7 @@ import {PaperItem} from "./PaperItem";
 
 const PaperListContainer = style.div`
     text-align: center;
-    float: left;
-    width: 70%;
+    width: 100%;
 `;
 
 interface PaperListProps {
@@ -16,7 +15,7 @@ const PaperList = (props: PaperListProps) => {
 	// Map papers to item list or empty span
 	let papers;
 	if (props.papers.length == 0)
-		papers = <span>No papers found.</span>;
+		papers = <span></span>;
 	else
 		papers = props.papers.map((paper, index:number) => {
 			const animTime = index * 50 + 50;
@@ -24,6 +23,8 @@ const PaperList = (props: PaperListProps) => {
 				key={paper.id}
 				id={paper.id}
 				title={paper.title}
+				topic={paper.topic}
+				year={paper.year}
 				authors={paper.authors}
 				link={paper.link}
 				score={paper.score ? paper.score : undefined}

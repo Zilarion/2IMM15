@@ -20,6 +20,19 @@ const CenterContainer = style.div`
 	padding-bottom: 80px;
 `;
 
+const DataContainer = style.div`
+	width: 70%;
+	display: inline-block;
+	float: left;
+`;
+
+const TopicContainer = style.div`
+	width: 30%;
+	display: inline-block;
+	float: right;
+`;
+
+
 const InputContainer = style.div`
 	width: 600px;
 	margin: 0 auto;
@@ -47,6 +60,7 @@ const ResultHeader = style.div`
 	text-align: left;
 	padding: ${(props: any) => props.theme.margins.small};
 	padding-bottom: 0px;
+	font-size: 12px;
 	color: ${(props: any) => props.theme.colors.subTitle};
 `;
 
@@ -59,7 +73,10 @@ interface SearchState {
 	papers: Array<PaperType>
 	authors: Array<AuthorType>
 	topics: Array<TopicType>
-	loading: boolean
+	loading: boolean,
+	count: number,
+	total: number,
+	duration: string
 }
 
 class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
@@ -69,7 +86,10 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			papers: [],
 			authors: [],
 			topics: [],
-			loading: false
+			loading: false,
+			count: 0,
+			total: 0,
+			duration: ''
 		};
 		this.onInputEnter = this.onInputEnter.bind(this);
 	}
@@ -95,18 +115,17 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 	}
 
 	handleQueryReply(data: any) {
-		console.log("Query result: ", data);
 		let urlParams = this.props.match.params;
 		const domain = urlParams.domain || 'papers';
-		if (data.query !== urlParams.query || data.domain !== urlParams.domain) {
-			this.props.history.push('/search/' + domain + '/' + data.query);
-		}
 
 		if (domain === 'papers') {
 			this.setState({
 				...this.state,
 				papers: data.result.papers,
 				topics: data.result.topics,
+				count: data.result.count,
+				total: data.result.total,
+				duration: data.result.duration,
 				authors: []
 			});
 		} else if (domain === 'authors') {
@@ -114,6 +133,9 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 				...this.state,
 				papers: [],
 				authors: data.result.authors,
+				count: data.result.count,
+				total: data.result.total,
+				duration: data.result.duration,
 				topics: []
 			})
 		}
@@ -125,7 +147,6 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 	}
 
 	queryData(postData: { query: string, domain: string }) {
-		console.log("Doing query: ", postData);
 		this.setState({
 			...this.state,
 			loading: true
@@ -153,9 +174,12 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			...this.state,
 			papers: []
 		});
+		const domain = this.props.match.params.domain || 'papers';
+		this.props.history.push('/search/' + domain + '/' + value);
+
 		this.queryData({
 			query: value,
-			domain: this.props.match.params.domain || 'papers'
+			domain: domain
 		});
 	}
 
@@ -182,17 +206,28 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			if (this.state.loading) {
 				searchResult = <LoadingIndicator />
 			} else {
+				let topics = (<TopicContainer>
+						<TopicList topics={this.state.topics}/>
+					</TopicContainer>
+				);
+				let resultHeader = (
+					<ResultHeader>Showing {this.state.count} of {this.state.total} results ({this.state.duration} seconds)</ResultHeader>
+				);
 				if (params.domain === 'papers')
 					searchResult = (<div>
-						<ResultHeader>Results</ResultHeader>
-						<PaperList papers={this.state.papers}/>
-						<TopicList topics={this.state.topics}/>
+						{resultHeader}
+						<DataContainer>
+							<PaperList papers={this.state.papers}/>
+						</DataContainer>
+						{topics}
 					</div>);
 				else if (params.domain === 'authors')
 					searchResult = (<div>
-						<ResultHeader>Results</ResultHeader>
-						<AuthorList authors={this.state.authors}/>
-						<TopicList topics={this.state.topics}/>
+						{resultHeader}
+						<DataContainer>
+							<AuthorList authors={this.state.authors}/>
+						</DataContainer>
+						{topics}
 					</div>);
 			}
 

@@ -1,8 +1,9 @@
-from flask import jsonify
+from flask import jsonify, json
 from fuzzywuzzy import process
 
 from index_computation import query, queryLM
 from models.Data import Data
+import time
 
 
 def handle_query(query_content):
@@ -10,10 +11,15 @@ def handle_query(query_content):
     query_domain = query_content.get('domain')
     if q is None:
         return jsonify([])
-    return jsonify(route_query(q, query_domain))
+    start = time.time()
+    result = route_query(q, query_domain)
+    end = time.time()
+    result['duration'] = (end-start)
+    return jsonify(result)
 
 
 def route_query(q, query_domain):
+
     if query_domain == 'authors':
         return handle_authors_query(q)
     if query_domain == 'papers':
@@ -30,14 +36,18 @@ def handle_authors_query(q):
     for key, author in Data.authors.items():
         author_names.append(author.name)
         name_dict[author.name] = author
-    matches = process.extract(q, author_names)
+    matches = process.extract(q, author_names, limit=len(Data.authors.items()))
 
     result = []
+    count = 0
     for record in matches:
         json = name_dict[record[0]].to_json(True)
         json['score'] = record[1]
         result.append(json)
-    return {'authors': result}
+        count += 1
+        if count >= 20:
+            break
+    return {'authors': result, 'count': len(result), 'total': len(matches)}
 
 
 def handle_papers_query(q):
@@ -61,9 +71,9 @@ def handle_papers_query(q):
         result.append(json)
         topics = update_topics(topics, paper_id)
         count += 1
-        if count > 20:
+        if count >= 20:
             break
-    return {'papers': result, 'topics': [v for v in topics.values()]}
+    return {'papers': result, 'count': len(result), 'total': len(ranking), 'topics': [v for v in topics.values()]}
 
 
 def update_topics(old_topics, paper_id):

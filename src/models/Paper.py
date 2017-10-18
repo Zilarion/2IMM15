@@ -22,4 +22,14 @@ class Paper:
         authors = []
         for author_id in self.authors:
             authors.append(Data.authors[author_id].to_json(with_co_authors))
-        return {'id': self.id, 'title': self.title, 'year': self.year, 'authors': authors, 'link': 'https://papers.nips.cc/paper/' + self.pdf_name}
+        topic = '-'
+        if self.id in Data.papers_topic_label:
+            topic = Data.papers_topic_label[self.id]
+        return {
+            'id': self.id,
+            'title': self.title,
+            'year': self.year,
+            'authors': authors,
+            'link': 'https://papers.nips.cc/paper/' + self.pdf_name,
+            'topic': topic
+            }

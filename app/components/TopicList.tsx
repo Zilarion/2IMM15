@@ -2,9 +2,8 @@ import * as React from 'react';
 import style      from 'styled-components';
 
 const TopicListContainer = style.div`
-    text-align: center;
-    float: right;
-    width: calc(30% - ${(props: any) => props.theme.margins.smallx4});
+    text-align: left;
+    width: calc(100% - ${(props: any) => props.theme.margins.smallx4});
     margin: ${(props: any) => props.theme.margins.small};
     padding: ${(props: any) => props.theme.margins.small};
     background-color: ${(props: any) => props.theme.colors.header};
@@ -12,7 +11,8 @@ const TopicListContainer = style.div`
 `;
 
 const HeaderTopic = style.h4`
-	margin: ${(props: any) => props.theme.margins.small} 0px;
+    text-align: center;
+		margin: ${(props: any) => props.theme.margins.small} 0px;
 `;
 
 interface TopicListProps {
@@ -26,12 +26,12 @@ const TopicList = (props: TopicListProps) => {
 	else {
 		topics = props.topics.map((topic: TopicType, index: number) => {
 			return (
-				<div key={index}>
-					<span>({topic.number}) {topic.label}</span>
-					<br/>
-				</div>
+				<tr key={index}>
+					<td>({topic.number})</td><td>{topic.label}</td>
+				</tr>
 			);
 		});
+		topics = <table><tbody>{topics}</tbody></table>;
 	}
 
 	// Render

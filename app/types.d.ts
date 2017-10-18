@@ -18,11 +18,11 @@ type PaperType = {
 	id: number,
 	title: string,
 	authors: Array<AuthorType>,
-	link?: string,
+	link: string,
 	score?: number,
 	animTime: number,
-	year?: string,
-	text?: string
+	year: string
+	topic: string
 }
 
 

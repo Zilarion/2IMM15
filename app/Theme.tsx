@@ -1,6 +1,7 @@
 const Theme = {
 	colors: {
 		accent:    "#3e96fa",
+		hover:     "#71C9FF",
 		subTitle:  "#999",
 		inactive:  "#999",
 		header:    "#eee",
