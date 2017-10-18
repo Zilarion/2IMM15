@@ -5,7 +5,7 @@ from nltk import *
 from nltk.corpus import stopwords
 from models.Data import Data
 from topic_model import *
-
+from numpy import array
 
 def compute_index():
     loaded_index = dict()
@@ -13,15 +13,25 @@ def compute_index():
     docs_tokens = dict()    # necessary for LDA/LSA
     gensim_dict = None      # necessary for LDA/LSA
     corpus = None           # necessary for LDA/LSA
+    lda_obj = None
+    bow = None
+    collection_bow = dict()
+    papers_topic_label = dict() #topicId - topic Label
 
-    limit_id = 5
+    limit_id = 6604
+    min_limit = 3464
+    limit_id = 10
+    min_limit = 0
+
+
     try:
         with open('inverted_index.txt', 'r') as file:
             data = file.readlines()
             for line in data:
                 line_data = dict(json.loads(line.rstrip()))
-                if line_data["id"] < limit_id:
+                if min_limit <  line_data["id"] < limit_id:
                     loaded_index[line_data["id"]] = line_data["inverted_index"]
+                    collection_bow[line_data["id"]] = [words for words, freq in (loaded_index[line_data["id"]]).items()]
             print("LOADING/READING")
             gensim_dict = get_gensim_dict()
             corpus = get_corpus()
@@ -33,7 +43,7 @@ def compute_index():
         flag = False
 
         for i, paper in Data.papers.items():
-            if paper.id not in loaded_index and paper.id < limit_id:
+            if paper.id not in loaded_index and min_limit< paper.id < limit_id:
                 document = [paper.title + "\n" + paper.paper_text]
                 inv_index = get_inv_ind(document, docs_tokens, paper.id)
                 flag = True
@@ -44,8 +54,9 @@ def compute_index():
                 print("Computing inverted index for", paper.id, "out of", len(Data.papers))
 
         if flag and docs_tokens:
-            save_gensim_dict(filter_tokens(docs_tokens))
-        print("WRITING")
+            bow = filter_tokens(docs_tokens)
+            save_gensim_dict(bow)
+
 
     print("Reconstructing inv index")
     final_index = {}
@@ -58,9 +69,37 @@ def compute_index():
             total_occurence = total_occurence + index[word]['0']
             result_length[paper_id] = total_occurence
 
+    # if gensim_dict and corpus retrieved/created
+    # do lda modelling
     if corpus and gensim_dict:
-        do_lda_modelling(corpus, gensim_dict, 10)
+        do_lda_modelling(corpus, gensim_dict, 5)
 
+    # if lda modelling is not yet done, and all collection bow is read successfully
+    # create gensim_dict, corpus and lda based on the file read
+    if not load_ldamodel() and collection_bow:
+        save_gensim_dict(collection_bow)
+        gensim_dict = get_gensim_dict()
+        corpus = get_corpus()
+        do_lda_modelling(corpus, gensim_dict, 5)
+
+    if load_ldamodel():
+        lda_obj = load_ldamodel()
+        pprint(lda_obj.print_topics(num_topics=5, num_words=10))
+        if bow: # if the docs are just indexed - bow should not be empty
+            # doc_bow = [doc_words for docId, doc_words in bow.items()]
+            gensim_dict = get_gensim_dict()
+            for docId, doc_words in bow.items():
+                doc = gensim_dict.doc2bow(doc_words)
+        elif collection_bow:
+            matrix_result= dict()
+            # for key, value in collection_bow.items():
+            #     print(collection_bow)
+            for docId, doc_words in collection_bow.items():
+                doc = gensim_dict.doc2bow(doc_words)
+                papers_topic_label[docId] = label_doc(lda_obj[doc])
+                matrix_result[docId] = lda_obj[doc]
+    Data.papers_topic_label = papers_topic_label
+    pprint(Data.papers_topic_label)
     Data.inverted_index = final_index
     Data.length = result_length
     print("Reconstructing inv index")

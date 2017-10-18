@@ -4,6 +4,7 @@ class Data:
     inverted_index = {}
     citations = {}
     length = dict() # length of each doc thus dict
+    papers_topic_label = dict()
 
     def __init__(self):
         pass

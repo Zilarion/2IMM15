@@ -57,7 +57,8 @@ def get_corpus():
 
 
 def do_lda_modelling(corpus, dictionary, topcnr= 50):
-    lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=topcnr, update_every=0, chunksize=3500, passes=5)
+    lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=topcnr,
+                                   alpha='auto', eta='auto', update_every=0, chunksize=3500, passes=5)
     save_lda_model(lda)
     return lda
 
@@ -95,3 +96,19 @@ def load_ldamodel():
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
             message = template.format(type(ex).__name__, ex.args)
             print(message)
+
+# return
+def label_doc(doc_lda_result):
+    max_probability = 0
+    tid_max_prob = -1 #topic id of the topic with highest probability
+
+    for i in range(0, len(doc_lda_result)):
+        if doc_lda_result[i][1] > max_probability:
+            # the second value from the tuple is probability
+            max_probability = doc_lda_result[i][1]
+            # the first value from the tuple is topicId
+            tid_max_prob = doc_lda_result[i][0]
+    return tid_max_prob
+
+
+
