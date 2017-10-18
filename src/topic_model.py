@@ -11,7 +11,9 @@ TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
 def save_gensim_dict(docID_list_strings):
     if not os.path.exists(TEMP_FOLDER):
         os.makedirs(TEMP_FOLDER)
+    docID_list_strings = filter_tokens(docID_list_strings)
     words_per_docs = [coll_words for docId, coll_words in docID_list_strings.items()]
+
 
     dictionary = corpora.Dictionary(words_per_docs)
     # TODO further research into this/similar functionalities
@@ -73,7 +75,8 @@ def do_lda_modelling(corpus, dictionary, topcnr= 50):
 def filter_tokens(docs_tokens):
     filtr_docs_tokens = dict()
     for docId, tokens in docs_tokens.items():
-        filtr_docs_tokens[docId] = [token for token in tokens if len(token) > 1]
+        filtr_docs_tokens[docId] = [token for token in tokens if len(token) > 2 or token for token in tokens if not token.isdigit()]
+
     return filtr_docs_tokens
 
 
@@ -114,7 +117,7 @@ def label_doc(doc_lda_result):
     return tid_max_prob
 
 
-def evaluate_graph(lda, corpus, dictionary, limit=50):
+def evaluate_graph(corpus, dictionary, limit=50):
 
     c_v = []
     lm_list = []
