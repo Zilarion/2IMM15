@@ -34,7 +34,7 @@ const fadeIn = keyframes`
 const PaperItemContainer = styled.div`
     text-align: left;
     padding: ${(props: any) => props.theme.margins.medium};
-		animation: ${fadeIn} ${(props: any) => { return props.animTime }}ms linear;
+		animation: ${fadeIn} ${(props: any) => { return props.animTime }}ms ease-in;
 		
 		display: flex;
 		flex-direction: row;

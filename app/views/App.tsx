@@ -24,7 +24,7 @@ class App extends React.Component<AppProps, {}> {
 			<AppContent>
 				<Switch>
 					<Route path="/evolution" component={Evolution}/>
-					<Route path="/search/:domain?/:query?" component={Search}/>
+					<Route path="/search/:domain?/:query?/:page?" component={Search}/>
 					<Route path="/author/:id" component={Author}/>
 					<Route path="/paper/:id" component={Paper}/>
 					<Redirect path="/" to="/search"/>

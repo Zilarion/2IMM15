@@ -1,6 +1,6 @@
 // Libraries
 import * as React from 'react';
-import style from 'styled-components';
+import style, {keyframes} from 'styled-components';
 import {withRouter} from "react-router";
 import * as $ from 'jquery';
 import {LoadingIndicator} from "../components/LoadingIndicator";
@@ -15,12 +15,25 @@ const PropertiesContainer = style.div`
 	margin-bottom:  ${(props: any) => props.theme.margins.small};
 `;
 
-const StyledRouterLink = style(Link)`
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+const IconBackContainer = style.div`
 	text-decoration: none;
 	color: ${(props: any) => props.theme.colors.accent};
+	cursor: pointer;
 	&:hover {
-	color: ${(props: any) => props.theme.colors.hover};
-}`;
+		color: ${(props: any) => props.theme.colors.hover};
+	}
+`;
+
 
 const HeaderContainer = style.div`
 	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
@@ -35,6 +48,7 @@ const DataContainer = style.div`
 	margin: ${(props: any) => props.theme.margins.small};
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	display: inline-block;
+	animation: ${fadeIn} 200ms ease-in;
 `;
 
 const AuthorContainer = style.div`
@@ -112,7 +126,9 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 			searchResult = (
 				<div>
 					<HeaderContainer>
-						<StyledRouterLink to={'/search/papers/' + this.state.paper.title}>{'<'} to search</StyledRouterLink>
+						<IconBackContainer onClick={this.props.history.goBack}>
+							<i className="material-icons">arrow_back</i>
+						</IconBackContainer>
 					</HeaderContainer>
 					<DataContainer>
 						<PropertiesContainer>

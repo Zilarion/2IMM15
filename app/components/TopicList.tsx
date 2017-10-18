@@ -21,7 +21,7 @@ interface TopicListProps {
 const TopicList = (props: TopicListProps) => {
 	let topics;
 	if (props.topics.length == 0)
-		return (<div></div>);
+		return (<div />);
 	else {
 		topics = props.topics.map((topic: TopicType, index: number) => {
 			return (

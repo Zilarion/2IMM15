@@ -104,15 +104,16 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 	componentWillReceiveProps(nextProps: SearchProps) {
 		let oldUrl = this.props.match.params;
 		let newUrl = nextProps.match.params;
-		if (oldUrl.domain !== newUrl.domain || oldUrl.query !== newUrl.query) {
+		if (oldUrl.domain !== newUrl.domain || oldUrl.query !== newUrl.query || oldUrl.page !== newUrl.page) {
 			this.queryForUrl(newUrl);
 		}
 	}
 
-	queryForUrl(url: {query: string, domain: string}) {
+	queryForUrl(url: {query: string, domain: string, page: string}) {
 		this.queryData( {
 			query: url.query,
-			domain: url.domain
+			domain: url.domain,
+			page: parseInt(url.page) || 0
 		})
 	}
 
@@ -134,11 +135,11 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			this.setState({
 				...this.state,
 				papers: [],
-				authors: data.result.authors,
+				topics: [],
 				count: data.result.count,
 				total: data.result.total,
 				duration: data.result.duration,
-				topics: []
+				authors: data.result.authors
 			})
 		}
 
@@ -148,12 +149,11 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		})
 	}
 
-	queryData(postData: { query: string, domain: string }) {
+	queryData(postData: { query: string, domain: string, page: number }) {
 		this.setState({
 			...this.state,
 			loading: true
 		});
-
 		$.ajax({
 			url: "/query",
 			type: "POST",
@@ -179,9 +179,12 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		const domain = this.props.match.params.domain || 'papers';
 		this.props.history.push('/search/' + domain + '/' + value);
 
+		const page = this.props.match.params.page || 0;
+
 		this.queryData({
 			query: value,
-			domain: domain
+			domain: domain,
+			page: page
 		});
 	}
 
