@@ -5,6 +5,7 @@ from nltk import *
 from nltk.corpus import stopwords
 from models.Data import Data
 from topic_model import *
+import pyLDAvis.gensim
 from numpy import array
 
 def compute_index():
@@ -71,7 +72,7 @@ def compute_index():
     # if gensim_dict and corpus retrieved/created
     # do lda modelling
     if corpus and gensim_dict:
-        do_lda_modelling(corpus, gensim_dict, 50)
+        do_lda_modelling(corpus, gensim_dict, 10)
 
     # if lda modelling is not yet done, and all collection bow is read successfully
     # create gensim_dict, corpus and lda based on the file read
@@ -79,11 +80,12 @@ def compute_index():
         save_gensim_dict(collection_bow)
         gensim_dict = get_gensim_dict()
         corpus = get_corpus()
-        do_lda_modelling(corpus, gensim_dict, 50)
+        do_lda_modelling(corpus, gensim_dict, 10)
+
 
     if load_ldamodel():
         lda_obj = load_ldamodel()
-        pprint(lda_obj.print_topics(num_topics=50, num_words=10))
+        pprint(lda_obj.print_topics(num_topics=10, num_words=10))
         if bow: # if the docs are just indexed - bow should not be empty
             # doc_bow = [doc_words for docId, doc_words in bow.items()]
             gensim_dict = get_gensim_dict()
@@ -97,7 +99,8 @@ def compute_index():
                 doc = gensim_dict.doc2bow(doc_words)
                 papers_topic_label[docId] = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
-        evaluate_graph(lda_obj, corpus, gensim_dict, limit=50)
+#        lm_list = evaluate_graph(lda_obj, corpus, gensim_dict, limit=10)
+
 
     Data.papers_topic_label = papers_topic_label
     pprint(Data.papers_topic_label)
