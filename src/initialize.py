@@ -16,17 +16,13 @@ def initialize():
     cur = con.cursor()
     print("Loading data..")
     load_models(cur)
-<<<<<<< refs/remotes/origin/master
     print("Loaded data")
     # fetch_citations()
     print("Loading inverted index..")
     compute_index()
     print("Loaded inverted index")
-
-=======
     print("Done")
     create_author_graph()
->>>>>>> Added a start on clustering of Authors
 
 # imports the papers and authors in memory
 def load_models(cursor):
