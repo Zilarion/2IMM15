@@ -7,6 +7,7 @@ import {Route, Redirect, Switch} from 'react-router-dom';
 import {Search} from "./Search";
 import {Author} from "./Author";
 import {Evolution} from "./Evolution";
+import {Paper} from "./Paper";
 
 const AppContent = style.div`
 	height: 100%;
@@ -25,6 +26,7 @@ class App extends React.Component<AppProps, {}> {
 					<Route path="/evolution" component={Evolution}/>
 					<Route path="/search/:domain?/:query?" component={Search}/>
 					<Route path="/author/:id" component={Author}/>
+					<Route path="/paper/:id" component={Paper}/>
 					<Redirect path="/" to="/search"/>
 					{/*<Route component={NotFound}/>*/}
 				</Switch>

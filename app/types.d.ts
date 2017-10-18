@@ -21,6 +21,8 @@ type PaperType = {
 	link?: string,
 	score?: number,
 	animTime: number,
+	year?: string,
+	text?: string
 }
 
 

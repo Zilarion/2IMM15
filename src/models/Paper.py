@@ -18,8 +18,8 @@ class Paper:
     def to_string(self):
         return "id: " + str(self.id) + " tile: " + self.title
 
-    def to_json(self):
+    def to_json(self, with_co_authors=False):
         authors = []
         for author_id in self.authors:
-            authors.append(Data.authors[author_id].to_json())
-        return {'id': self.id, 'title': self.title, 'year': self.year, 'authors': authors}
+            authors.append(Data.authors[author_id].to_json(with_co_authors))
+        return {'id': self.id, 'title': self.title, 'year': self.year, 'authors': authors, 'link': 'https://papers.nips.cc/paper/' + self.pdf_name}

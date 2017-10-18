@@ -1,6 +1,13 @@
 import * as React from 'react';
 import styled, {keyframes} from 'styled-components';
 
+import {Link} from "react-router-dom";
+
+const StyledLink = styled(Link)`
+	text-decoration: none;
+	color: ${(props: any) => props.theme.colors.accent};
+`;
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -29,12 +36,16 @@ const PaperItem = (props: PaperType) => {
 	for (const author of props.authors)
 		authorNames.push(author.name);
 
+	let authorString = authorNames.join(', ');
+	if (authorNames.length > 0)
+		authorString = 'Authors: ' + authorString;
+
 	let paperScore = props.score ? '(' + props.score.toFixed(2) + ')' : '';
 
 	return (
 		<PaperItemContainer animTime={props.animTime}>
-			<a href={props.link}>{paperScore} {props.title}</a><br />
-			<SubTitleContainer>{authorNames.join(', ')}</SubTitleContainer>
+			{paperScore}  <StyledLink to={'/paper/' + props.id}>{props.title}</StyledLink><br />
+			<SubTitleContainer>{authorString}</SubTitleContainer>
 		</PaperItemContainer>
 	);
 };

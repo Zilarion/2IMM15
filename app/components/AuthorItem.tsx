@@ -44,9 +44,11 @@ const AuthorItem = (props: AuthorType) => {
 		const coAuthorString = authorArrayString.filter((item) => typeof item !== 'undefined').join(', ');
 		coAuthors = <SubTitleContainer>Worked with: {coAuthorString}</SubTitleContainer>;
 	}
+	let authorScore = props.score ? '(' + props.score.toFixed(2) + ')' : '';
+
 	return (
 		<AuthorItemContainer animTime={props.animTime}>
-			({props.score.toFixed(2)}) <StyledLink to={'/author/' + props.id}>{props.name}</StyledLink><br />
+			{authorScore} <StyledLink to={'/author/' + props.id}>{props.name}</StyledLink><br />
 			{coAuthors}
 		</AuthorItemContainer>
 	);

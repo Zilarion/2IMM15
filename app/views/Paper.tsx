@@ -4,7 +4,7 @@ import style from 'styled-components';
 import {withRouter} from "react-router";
 import * as $ from 'jquery';
 import {LoadingIndicator} from "../components/LoadingIndicator";
-import {PaperList} from "../components/PaperList";
+import {AuthorList} from "../components/AuthorList";
 
 const HeaderContainer = style.div`
 	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
@@ -14,22 +14,22 @@ const HeaderContainer = style.div`
 	background-color: ${(props: any) => props.theme.colors.header};
 `;
 
-interface AuthorProps {
+interface PaperProps {
 	history: any,
 	match: any
 }
 
-interface AuthorState {
+interface PaperState {
 	loading: boolean,
-	author: AuthorType
+	paper: PaperType
 }
 
-class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
+class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 	constructor() {
 		super();
 		this.state = {
 			loading: false,
-			author: undefined
+			paper: undefined
 		};
 	}
 
@@ -38,7 +38,7 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 			... this.state,
 			loading: true
 		});
-		let postData = {'domain': 'author', 'query': parseInt(id, 10)};
+		let postData = {'domain': 'paper', 'query': parseInt(id, 10)};
 		$.ajax({
 			url: "/query",
 			type: "POST",
@@ -49,7 +49,7 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 				this.setState({
 					... this.state,
 					loading: false,
-					author: data.author
+					paper: data.paper
 				})
 			}
 		});
@@ -67,19 +67,21 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 			searchResult = (
 				<div>
 					<HeaderContainer>
-						<h2>{this.state.author.name}</h2>
+						<h2>{this.state.paper.title} ({this.state.paper.year})</h2>
 					</HeaderContainer>
-					<PaperList papers={this.state.author.papers} />
+					<div>
+						<a href={this.state.paper.link}>View paper</a>
+					</div>
+					<AuthorList authors={this.state.paper.authors} />
 				</div>
 			);
 
 		}
 
-
 		return searchResult;
 	}
 }
 
-let Author = withRouter(AuthorWithoutRouter);
+let Paper = withRouter(PaperWithoutRouter);
 
-export {Author};
+export {Paper};

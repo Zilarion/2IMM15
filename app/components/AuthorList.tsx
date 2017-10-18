@@ -24,7 +24,7 @@ const AuthorList = (props: AuthorListProps) => {
 				key={index}
 				id={author.id}
 				name={author.name}
-				score={author.score}
+				score={author.score ? author.score : undefined}
 				coAuthors={author.coAuthors}
 				animTime={animTime}
 			/>
