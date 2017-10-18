@@ -15,27 +15,32 @@ def handle_query(query_content):
 
 def route_query(q, query_domain):
     if query_domain == 'authors':
-        return handle_author_query(q)
+        return handle_authors_query(q)
     if query_domain == 'papers':
+        return handle_papers_query(q)
+    if query_domain == 'paper':
         return handle_paper_query(q)
+    if query_domain == 'author':
+        return handle_author_query(q)
 
 
-def handle_author_query(q):
+def handle_authors_query(q):
     author_names = []
+    name_dict = dict()
     for key, author in Data.authors.items():
         author_names.append(author.name)
+        name_dict[author.name] = author
     matches = process.extract(q, author_names)
 
     result = []
     for record in matches:
-        json = dict()
-        json['name'] = record[0]
+        json = name_dict[record[0]].to_json(True)
         json['score'] = record[1]
         result.append(json)
     return {'authors': result}
 
 
-def handle_paper_query(q):
+def handle_papers_query(q):
     ranking = query(q, Data.inverted_index, len(Data.papers))
     # ranking based on language model
     # TODO to incorporate both rankings
@@ -70,3 +75,13 @@ def update_topics(old_topics, paper_id):
     else:
         new_topics[topic_id] = {'number': 1, 'label': str(topic_id)}
     return new_topics
+
+
+def handle_paper_query(q):
+    paper_id = q
+    return {'paper': Data.papers[paper_id].to_json()}
+
+
+def handle_author_query(q):
+    author_id = q
+    return {'author': Data.authors[author_id].to_json(True, True)}

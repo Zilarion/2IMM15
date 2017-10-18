@@ -1,7 +1,7 @@
 from gensim import corpora, models
 from gensim.models import CoherenceModel
 from gensim.models import LdaModel
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import os
 
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
@@ -125,12 +125,12 @@ def evaluate_graph(lda, corpus, dictionary, limit=50):
         c_v.append(cm.get_coherence())
 
     # Show graph
-    x = range(1, limit)
-    plt.plot(x, c_v)
-    plt.xlabel("num_topics")
-    plt.ylabel("Coherence score")
-    plt.legend(("c_v"), loc='best')
-    plt.show()
+    # x = range(1, limit)
+    # plt.plot(x, c_v)
+    # plt.xlabel("num_topics")
+    # plt.ylabel("Coherence score")
+    # plt.legend(("c_v"), loc='best')
+    # plt.show()
 
     return lm_list
 

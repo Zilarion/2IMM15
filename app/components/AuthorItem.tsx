@@ -1,5 +1,12 @@
 import * as React from 'react';
 import styled, {keyframes} from 'styled-components';
+import {Link} from "react-router-dom";
+
+
+const StyledLink = styled(Link)`
+	text-decoration: none;
+	color: ${(props: any) => props.theme.colors.accent};
+`;
 
 const fadeIn = keyframes`
   from {
@@ -19,10 +26,28 @@ const AuthorItemContainer = styled.div`
 		animation: ${fadeIn} ${(props: any) => { return props.animTime }}ms linear;
 `;
 
+const SubTitleContainer = styled.div`
+	color: ${(props: any) => props.theme.colors.subTitle};
+	font-size: 12px;
+`;
+
 const AuthorItem = (props: AuthorType) => {
+	let coAuthors;
+	if (props.coAuthors) {
+		let authorArrayString = props.coAuthors.map((coauthor, index: number) => {
+			if (index === 5) {
+				return 'and ' + (props.coAuthors.length - 5) + ' more.';
+			} else if (index < 5) {
+				return coauthor.name;
+			}
+		});
+		const coAuthorString = authorArrayString.filter((item) => typeof item !== 'undefined').join(', ');
+		coAuthors = <SubTitleContainer>Worked with: {coAuthorString}</SubTitleContainer>;
+	}
 	return (
 		<AuthorItemContainer animTime={props.animTime}>
-			<a>({props.score.toFixed(2)}) {props.name}</a><br />
+			({props.score.toFixed(2)}) <StyledLink to={'/author/' + props.id}>{props.name}</StyledLink><br />
+			{coAuthors}
 		</AuthorItemContainer>
 	);
 };

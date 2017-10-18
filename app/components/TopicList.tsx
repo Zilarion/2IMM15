@@ -4,10 +4,15 @@ import style      from 'styled-components';
 const TopicListContainer = style.div`
     text-align: center;
     float: right;
-    width: calc(20% - ${(props: any) => props.theme.margins.smallx2});
+    width: calc(30% - ${(props: any) => props.theme.margins.smallx4});
+    margin: ${(props: any) => props.theme.margins.small};
     padding: ${(props: any) => props.theme.margins.small};
-    padding-top: 0px;
     background-color: ${(props: any) => props.theme.colors.header};
+  	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+`;
+
+const HeaderTopic = style.h4`
+	margin: ${(props: any) => props.theme.margins.small} 0px;
 `;
 
 interface TopicListProps {
@@ -32,7 +37,7 @@ const TopicList = (props: TopicListProps) => {
 	// Render
 	return (
 		<TopicListContainer>
-			<h4>Topics</h4>
+			<HeaderTopic>Topics</HeaderTopic>
 			{topics}
 		</TopicListContainer>
 	);

@@ -16,4 +16,5 @@ class Data:
 
     @classmethod
     def add_paper(cls, paper):
-        cls.papers[paper.id] = paper
+        if paper.title is not 'None':
+            cls.papers[paper.id] = paper

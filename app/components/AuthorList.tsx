@@ -5,7 +5,7 @@ import {AuthorItem} from "./AuthorItem";
 const AuthorListContainer = style.div`
     text-align: center;
     float: left;
-    width: 80%;
+    width: 70%;
 `;
 
 interface AuthorListProps {
@@ -25,6 +25,7 @@ const AuthorList = (props: AuthorListProps) => {
 				id={author.id}
 				name={author.name}
 				score={author.score}
+				coAuthors={author.coAuthors}
 				animTime={animTime}
 			/>
 		});
@@ -32,7 +33,6 @@ const AuthorList = (props: AuthorListProps) => {
 	// Render
 	return (
 		<AuthorListContainer>
-			<h2>Results</h2>
 			{authors}
 		</AuthorListContainer>
 	);

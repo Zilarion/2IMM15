@@ -5,7 +5,7 @@ import {PaperItem} from "./PaperItem";
 const PaperListContainer = style.div`
     text-align: center;
     float: left;
-    width: 80%;
+    width: 70%;
 `;
 
 interface PaperListProps {
@@ -16,7 +16,7 @@ const PaperList = (props: PaperListProps) => {
 	// Map papers to item list or empty span
 	let papers;
 	if (props.papers.length == 0)
-		papers = <span>Query has no results</span>;
+		papers = <span>No papers found.</span>;
 	else
 		papers = props.papers.map((paper, index:number) => {
 			const animTime = index * 50 + 50;
@@ -26,7 +26,7 @@ const PaperList = (props: PaperListProps) => {
 				title={paper.title}
 				authors={paper.authors}
 				link={paper.link}
-				score={paper.score}
+				score={paper.score ? paper.score : undefined}
 				animTime={animTime}
 			/>
 		});
@@ -34,7 +34,6 @@ const PaperList = (props: PaperListProps) => {
 	// Render
 	return (
 		<PaperListContainer>
-			<h2>Results</h2>
 			{papers}
 		</PaperListContainer>
 	);

@@ -32,16 +32,19 @@ def load_models(cursor):
 
     for row in cursor.execute('SELECT * FROM authors'):
         # create new author with id and name
-        author = Author(row[0], row[1])
-        Data.add_author(author)
+        if row[1] != 'None':
+            author = Author(row[0], row[1])
+            Data.add_author(author)
 
     for row in cursor.execute('SELECT * FROM paper_authors'):
-        Data.papers[row[1]].add_author(row[2])
-        Data.authors[row[2]].add_paper(row[1])
+        if row[1] in Data.papers and row[2] in Data.authors:
+            Data.papers[row[1]].add_author(row[2])
+            Data.authors[row[2]].add_paper(row[1])
 
     for key, paper in Data.papers.items():
         for author in paper.authors:
-            Data.authors[author].add_co_author(paper.authors)
+            if author in Data.authors:
+                Data.authors[author].add_co_author(paper.authors)
 
 
 def create_author_graph():

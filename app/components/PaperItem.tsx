@@ -29,9 +29,11 @@ const PaperItem = (props: PaperType) => {
 	for (const author of props.authors)
 		authorNames.push(author.name);
 
+	let paperScore = props.score ? '(' + props.score.toFixed(2) + ')' : '';
+
 	return (
 		<PaperItemContainer animTime={props.animTime}>
-			<a href={props.link}>({props.score.toFixed(2)}) {props.title}</a><br />
+			<a href={props.link}>{paperScore} {props.title}</a><br />
 			<SubTitleContainer>{authorNames.join(', ')}</SubTitleContainer>
 		</PaperItemContainer>
 	);

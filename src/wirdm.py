@@ -4,6 +4,9 @@ from flask import request
 
 import query_handler
 from initialize import initialize
+import warnings
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='', static_folder='../public')

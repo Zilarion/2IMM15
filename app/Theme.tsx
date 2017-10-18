@@ -9,6 +9,7 @@ const Theme = {
 		tiny: '6px',
 		small: '12px',
 		smallx2: '24px',
+		smallx4: '48px',
 		large: '24px',
 	}
 };

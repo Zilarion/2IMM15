@@ -3,6 +3,8 @@ type AuthorType = {
 	name: string,
 	score?: number,
 	animTime: number,
+	coAuthors?: Array<AuthorType>
+	papers?: Array<PaperType>
 }
 
 
@@ -24,3 +26,4 @@ type PaperType = {
 
 declare module 'styled-components'
 declare module 'react-loading'
+declare module 'react-konva'

@@ -31,16 +31,24 @@ const SearchContainer = style.div`
 `;
 
 const HeaderContainer = style.div`
-	width: 100%;
+	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
 	padding: ${(props: any) => props.theme.margins.small};
 	padding-bottom: 0px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: ${(props: any) => props.theme.colors.header};
 `;
 
 const ResultContainer = style.div`
-	width: 100%
+	display: inline-block;
+	width: 100%;
 `;
 
+const ResultHeader = style.div`
+	text-align: left;
+	padding: ${(props: any) => props.theme.margins.small};
+	padding-bottom: 0px;
+	color: ${(props: any) => props.theme.colors.subTitle};
+`;
 
 interface SearchProps {
 	history: any,
@@ -176,16 +184,16 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			} else {
 				if (params.domain === 'papers')
 					searchResult = (<div>
+						<ResultHeader>Results</ResultHeader>
 						<PaperList papers={this.state.papers}/>
 						<TopicList topics={this.state.topics}/>
 					</div>);
 				else if (params.domain === 'authors')
 					searchResult = (<div>
+						<ResultHeader>Results</ResultHeader>
 						<AuthorList authors={this.state.authors}/>
 						<TopicList topics={this.state.topics}/>
 					</div>);
-
-
 			}
 
 			return (
