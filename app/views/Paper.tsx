@@ -10,6 +10,11 @@ import {Link} from "react-router-dom";
 import {PaperItem} from "../components/PaperItem";
 
 
+const PropertiesContainer = style.div`
+	border-bottom: 1px solid ${(props: any) => props.theme.colors.divider};
+	margin-bottom:  ${(props: any) => props.theme.margins.small};
+`;
+
 const StyledRouterLink = style(Link)`
 	text-decoration: none;
 	color: ${(props: any) => props.theme.colors.accent};
@@ -35,17 +40,18 @@ const DataContainer = style.div`
 const AuthorContainer = style.div`
 	display: inline-block;
 	width: 50%;
-	float: left;
+	float: right;
 `;
 
 const PaperContainer = style.div`
 	display: inline-block;
 	width: 50%;
-	float: right;
+	float: left;
 `;
 
 const DataHeader = style.h4`
-	margin: ${(props: any) => props.theme.margins.medium};
+	margin: 0px;
+	margin-left: ${(props: any) => props.theme.margins.medium};
 `;
 
 interface PaperProps {
@@ -109,23 +115,25 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 						<StyledRouterLink to={'/search/papers/' + this.state.paper.title}>{'<'} to search</StyledRouterLink>
 					</HeaderContainer>
 					<DataContainer>
-						<PaperItem
-							id={this.state.paper.id}
-							title={this.state.paper.title}
-							authors={this.state.paper.authors}
-							link={this.state.paper.link}
-							year={this.state.paper.year}
-							topic={this.state.paper.topic}
-							animTime={0}
-						/>
-						<AuthorContainer>
-							<DataHeader>Authors:</DataHeader>
-							<AuthorList authors={this.state.paper.authors} />
-						</AuthorContainer>
+						<PropertiesContainer>
+							<PaperItem
+								id={this.state.paper.id}
+								title={this.state.paper.title}
+								authors={[]}
+								link={this.state.paper.link}
+								year={this.state.paper.year}
+								topic={this.state.paper.topic}
+								animTime={0}
+							/>
+						</PropertiesContainer>
 						<PaperContainer>
 							<DataHeader>Related papers:</DataHeader>
 							<PaperList papers={[]} />
 						</PaperContainer>
+						<AuthorContainer>
+							<DataHeader>Authors:</DataHeader>
+							<AuthorList authors={this.state.paper.authors} />
+						</AuthorContainer>
 					</DataContainer>
 				</div>
 			);

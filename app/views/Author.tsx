@@ -9,6 +9,10 @@ import {AuthorList} from "../components/AuthorList";
 import {Link} from "react-router-dom";
 import {AuthorItem} from "../components/AuthorItem";
 
+const PropertiesContainer = style.div`
+	border-bottom: 1px solid ${(props: any) => props.theme.colors.divider};
+	margin-bottom:  ${(props: any) => props.theme.margins.small};
+`;
 
 const StyledRouterLink = style(Link)`
 	text-decoration: none;
@@ -108,12 +112,14 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 						<StyledRouterLink to={'/search/authors/' + this.state.author.name}>{'<'} to search</StyledRouterLink>
 					</HeaderContainer>
 					<DataContainer>
-						<AuthorItem
-							id={this.state.author.id}
-							name={this.state.author.name}
-							coAuthors={[]}
-							animTime={0}
-						/>
+						<PropertiesContainer>
+							<AuthorItem
+								id={this.state.author.id}
+								name={this.state.author.name}
+								coAuthors={[]}
+								animTime={0}
+							/>
+						</PropertiesContainer>
 						<PaperContainer>
 							<DataHeader>papers written:</DataHeader>
 							<PaperList papers={this.state.author.papers} />
