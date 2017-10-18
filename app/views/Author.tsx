@@ -111,7 +111,8 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 	}
 
 	componentWillReceiveProps(nextProps: AuthorProps) {
-		this.queryForUrl(nextProps.match.params.id);
+		if (nextProps.match.params.id !== this.props.match.params.id)
+			this.queryForUrl(nextProps.match.params.id);
 	}
 
 	render() {
@@ -120,37 +121,39 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 			searchResult = <LoadingIndicator />
 		} else {
 			searchResult = (
-				<div>
-					<HeaderContainer>
-						<IconBackContainer onClick={this.props.history.goBack}>
-							<i className="material-icons">arrow_back</i>
-						</IconBackContainer>
-					</HeaderContainer>
-					<DataContainer>
-						<PropertiesContainer>
-							<AuthorItem
-								id={this.state.author.id}
-								name={this.state.author.name}
-								coAuthors={[]}
-								animTime={0}
-							/>
-						</PropertiesContainer>
-						<PaperContainer>
-							<DataHeader>Papers written:</DataHeader>
-							<PaperList papers={this.state.author.papers} />
-						</PaperContainer>
-						<AuthorContainer>
-							<DataHeader>Co-authors:</DataHeader>
-							<AuthorList authors={this.state.author.coAuthors} />
-						</AuthorContainer>
-					</DataContainer>
-				</div>
+				<DataContainer>
+					<PropertiesContainer>
+						<AuthorItem
+							id={this.state.author.id}
+							name={this.state.author.name}
+							coAuthors={[]}
+							animTime={0}
+							showLink={false}
+						/>
+					</PropertiesContainer>
+					<PaperContainer>
+						<DataHeader>Papers written:</DataHeader>
+						<PaperList papers={this.state.author.papers} />
+					</PaperContainer>
+					<AuthorContainer>
+						<DataHeader>Co-authors:</DataHeader>
+						<AuthorList authors={this.state.author.coAuthors} />
+					</AuthorContainer>
+				</DataContainer>
 			);
 
 		}
 
-
-		return searchResult;
+		return (
+			<div>
+				<HeaderContainer>
+					<IconBackContainer onClick={this.props.history.goBack}>
+						<i className="material-icons">arrow_back</i>
+					</IconBackContainer>
+				</HeaderContainer>
+				{searchResult}
+			</div>
+		);
 	}
 }
 

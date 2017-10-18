@@ -29,6 +29,7 @@ const PaperList = (props: PaperListProps) => {
 				link={paper.link}
 				score={paper.score ? paper.score : undefined}
 				animTime={animTime}
+				showLink={true}
 			/>
 		});
 

@@ -70,7 +70,7 @@ const IconContainer = styled.div`
 	height: 28px;
 `;
 
-const AuthorItem = (props: AuthorType) => {
+const AuthorItem = (props: AuthorType & {showLink: boolean}) => {
 	let coAuthors;
 	if (props.coAuthors && props.coAuthors.length > 0) {
 		let authorArrayString = props.coAuthors.map((coauthor, index: number) => {
@@ -85,6 +85,7 @@ const AuthorItem = (props: AuthorType) => {
 	}
 	let authorScore = props.score ? props.score.toFixed(2) : '';
 
+	const link = props.showLink ? <StyledRouterLink to={'/author/' + props.id}>{props.name}</StyledRouterLink> : props.name;
 	return (
 		<AuthorItemContainer animTime={props.animTime}>
 			<AuthorScoreContainer>{authorScore}</AuthorScoreContainer>
@@ -92,7 +93,7 @@ const AuthorItem = (props: AuthorType) => {
 				<i className="material-icons">person</i>
 			</IconContainer>
 			<DataContainer>
-				<StyledRouterLink to={'/author/' + props.id}>{props.name}</StyledRouterLink>
+				{link}
 				{coAuthors}
 			</DataContainer>
 		</AuthorItemContainer>

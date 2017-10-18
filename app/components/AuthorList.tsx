@@ -26,6 +26,7 @@ const AuthorList = (props: AuthorListProps) => {
 				score={author.score ? author.score : undefined}
 				coAuthors={author.coAuthors}
 				animTime={animTime}
+				showLink={true}
 			/>
 		});
 

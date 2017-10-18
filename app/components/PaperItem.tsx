@@ -79,7 +79,7 @@ const IconContainer = styled.div`
 	height: 28px;
 `;
 
-const PaperItem = (props: PaperType) => {
+const PaperItem = (props: PaperType & {showLink: boolean}) => {
 	let authorNames = [];
 	for (const author of props.authors)
 		authorNames.push(author.name);
@@ -90,6 +90,7 @@ const PaperItem = (props: PaperType) => {
 
 	let paperScore = props.score ? props.score.toFixed(2) : '';
 
+	const link = props.showLink ? <StyledRouterLink to={'/paper/' + props.id}>{props.title} ({props.year})</StyledRouterLink> : props.title;
 	return (
 		<PaperItemContainer animTime={props.animTime}>
 			<PaperScoreContainer>{paperScore}</PaperScoreContainer>
@@ -97,8 +98,8 @@ const PaperItem = (props: PaperType) => {
 				<i className="material-icons">description</i>
 			</IconContainer>
 			<DataContainer>
-				<StyledRouterLink to={'/paper/' + props.id}>{props.title} ({props.year})</StyledRouterLink><br />
-				<StyledLink target="_blank" href={props.link}>{props.link}</StyledLink><br />
+				{link}<br />
+				<StyledLink target="_blank" href={props.link}>{props.link}</StyledLink>
 				<SubTitleContainer>{authorString}</SubTitleContainer>
 			</DataContainer>
 		</PaperItemContainer>

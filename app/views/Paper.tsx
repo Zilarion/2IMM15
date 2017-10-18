@@ -114,8 +114,8 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 	}
 
 	componentWillReceiveProps(nextProps: PaperProps) {
-		console.log(nextProps);
-		this.queryForUrl(nextProps.match.params.id);
+		if (nextProps.match.params.id !== this.props.match.params.id)
+			this.queryForUrl(nextProps.match.params.id);
 	}
 
 	render() {
@@ -124,12 +124,6 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 			searchResult = <LoadingIndicator />
 		} else {
 			searchResult = (
-				<div>
-					<HeaderContainer>
-						<IconBackContainer onClick={this.props.history.goBack}>
-							<i className="material-icons">arrow_back</i>
-						</IconBackContainer>
-					</HeaderContainer>
 					<DataContainer>
 						<PropertiesContainer>
 							<PaperItem
@@ -140,6 +134,7 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 								year={this.state.paper.year}
 								topic={this.state.paper.topic}
 								animTime={0}
+								showLink={false}
 							/>
 						</PropertiesContainer>
 						<PaperContainer>
@@ -151,12 +146,20 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 							<AuthorList authors={this.state.paper.authors} />
 						</AuthorContainer>
 					</DataContainer>
-				</div>
 			);
 
 		}
 
-		return searchResult;
+		return (
+			<div>
+				<HeaderContainer>
+					<IconBackContainer onClick={this.props.history.goBack}>
+						<i className="material-icons">arrow_back</i>
+					</IconBackContainer>
+				</HeaderContainer>
+				{searchResult}
+			</div>
+		);
 	}
 }
 
