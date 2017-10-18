@@ -98,6 +98,8 @@ def compute_index():
                 doc = gensim_dict.doc2bow(doc_words)
                 papers_topic_label[docId] = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
+        evaluate_graph(lda_obj, corpus, gensim_dict, limit=50)
+
     Data.papers_topic_label = papers_topic_label
     pprint(Data.papers_topic_label)
     Data.inverted_index = final_index

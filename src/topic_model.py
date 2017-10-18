@@ -1,4 +1,6 @@
 from gensim import corpora, models
+from gensim.models import CoherenceModel
+import matplotlib.pyplot as plt
 import os
 
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
@@ -111,4 +113,20 @@ def label_doc(doc_lda_result):
     return tid_max_prob
 
 
+def evaluate_graph(lda, corpus, dictionary, limit=50):
+
+    c_v = []
+    for num_topics in range(1, limit):
+        cm = CoherenceModel(model=lda, corpus=corpus, dictionary=dictionary, coherence='u_mass')
+        c_v.append(cm.get_coherence())
+
+    # Show graph
+    x = range(1, limit)
+    plt.plot(x, c_v)
+    plt.xlabel("num_topics")
+    plt.ylabel("Coherence score")
+    plt.legend(("c_v"), loc='best')
+    plt.show()
+
+    return c_v
 
