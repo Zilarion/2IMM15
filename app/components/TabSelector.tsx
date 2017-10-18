@@ -5,12 +5,14 @@ import {Link} from "react-router-dom";
 const TabSelectorContainer = styled.div`
 	display: inline-block;
 	width: 100%;
-	margin-top:  ${(props: any) => props.theme.margins.large};
+	margin-top:  ${(props: any) => props.theme.margins.medium};
 `;
 
 const TabItem = styled.div`
+	position: relative;
+	top: 5px;
 	text-align: center;
-	border-bottom: ${(props: any) => props.selected ? '2px solid ' + props.theme.colors.accent : 'none'};
+	border-bottom: ${(props: any) => props.selected ? '2px solid ' + props.theme.colors.accent : ''};
 	color: ${(props: any) => props.selected ? props.theme.colors.accent : props.theme.colors.inactive };
 	display: inline-block;
 	padding: ${(props: any) => props.theme.margins.tiny};

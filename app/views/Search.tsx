@@ -45,7 +45,7 @@ const SearchContainer = style.div`
 `;
 
 const HeaderContainer = style.div`
-	width: 100%;
+	width: calc(100% - ${(props: any) => props.theme.margins.smallx2});
 	padding: ${(props: any) => props.theme.margins.small};
 	padding-bottom: 0px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -78,7 +78,7 @@ interface SearchState {
 	loading: boolean,
 	count: number,
 	total: number,
-	duration: string
+	duration: number
 }
 
 class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
@@ -91,7 +91,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 			loading: false,
 			count: 0,
 			total: 0,
-			duration: ''
+			duration: 0
 		};
 		this.onInputEnter = this.onInputEnter.bind(this);
 	}
@@ -213,7 +213,9 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 					</TopicContainer>
 				);
 				let resultHeader = (
-					<ResultHeader>Showing {this.state.count} of {this.state.total} results ({this.state.duration} seconds)</ResultHeader>
+					<ResultHeader>
+						Showing {this.state.count} of {this.state.total} results ({this.state.duration.toFixed(5)} seconds)
+					</ResultHeader>
 				);
 				if (params.domain === 'papers')
 					searchResult = (<div>

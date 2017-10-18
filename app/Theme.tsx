@@ -5,7 +5,7 @@ const Theme = {
 		hover:     "#71C9FF",
 		subTitle:  "#999",
 		inactive:  "#999",
-		divider:   "#999",
+		divider:   "#ddd",
 		link: 		 "green",
 		header:    "#eee",
 		white:     "#fff",
