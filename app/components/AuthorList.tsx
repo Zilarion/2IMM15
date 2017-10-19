@@ -15,7 +15,7 @@ const AuthorList = (props: AuthorListProps) => {
 	// Map papers to item list or empty span
 	let authors;
 	if (props.authors.length == 0)
-		authors = <span></span>;
+		authors = <span />;
 	else
 		authors = props.authors.map((author, index: number) => {
 			const animTime = index * 50 + 50;

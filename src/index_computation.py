@@ -8,7 +8,8 @@ from topic_model import *
 import pyLDAvis.gensim
 from numpy import array
 
-def compute_index():
+
+def compute_index_and_topics():
     loaded_index = dict()
     result_length = dict()
     docs_tokens = dict()    # necessary for LDA/LSA
@@ -23,7 +24,7 @@ def compute_index():
     limit_id = 10000000
     min_limit = 0
 
-
+    print("Loading inverted index..")
     try:
         with open('inverted_index.txt', 'r') as file:
             data = file.readlines()
@@ -32,7 +33,6 @@ def compute_index():
                 if min_limit <  line_data["id"] < limit_id:
                     loaded_index[line_data["id"]] = line_data["inverted_index"]
                     collection_bow[line_data["id"]] = [words for words, freq in (loaded_index[line_data["id"]]).items()]
-            print("LOADING/READING")
             gensim_dict = get_gensim_dict()
             corpus = get_corpus()
 
@@ -57,6 +57,7 @@ def compute_index():
             bow = filter_tokens(docs_tokens)
             save_gensim_dict(bow)
 
+    print("Loaded inverted index")
 
     print("Reconstructing inv index")
     final_index = {}
@@ -69,6 +70,11 @@ def compute_index():
             total_occurence = total_occurence + index[word]['0']
             result_length[paper_id] = total_occurence
 
+    Data.inverted_index = final_index
+    Data.length = result_length
+    print("Reconstructed inv index")
+
+    print("Computing topics")
     # if gensim_dict and corpus retrieved/created
     # do lda modelling
     if corpus and gensim_dict:
@@ -76,38 +82,29 @@ def compute_index():
 
     # if lda modelling is not yet done, and all collection bow is read successfully
     # create gensim_dict, corpus and lda based on the file read
-    if not load_ldamodel() and collection_bow:
+    lda_obj = load_ldamodel()
+    if not lda_obj and collection_bow:
         save_gensim_dict(collection_bow)
         gensim_dict = get_gensim_dict()
         corpus = get_corpus()
         do_lda_modelling(corpus, gensim_dict, 8)
 
-
-    if load_ldamodel():
-        lda_obj = load_ldamodel()
-        pprint(lda_obj.print_topics(num_topics=8, num_words=10))
+    if lda_obj:
         if bow: # if the docs are just indexed - bow should not be empty
             # doc_bow = [doc_words for docId, doc_words in bow.items()]
             gensim_dict = get_gensim_dict()
             for docId, doc_words in bow.items():
                 doc = gensim_dict.doc2bow(doc_words)
         elif collection_bow:
-            matrix_result= dict()
+            matrix_result = dict()
             # for key, value in collection_bow.items():
             #     print(collection_bow)
             for docId, doc_words in collection_bow.items():
                 doc = gensim_dict.doc2bow(doc_words)
-                papers_topic_label[docId] = label_doc(lda_obj[doc])
+                Data.papers[docId].topic = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
 #        evaluate_graph(corpus, gensim_dict, limit=50)
-
-
-
-    Data.papers_topic_label = papers_topic_label
-    pprint(Data.papers_topic_label)
-    Data.inverted_index = final_index
-    Data.length = result_length
-    print("Reconstructing inv index")
+    print("Done computing topics")
 
 
 # Calculating the term frequency for a single document

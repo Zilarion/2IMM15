@@ -72,8 +72,8 @@ def handle_papers_query(q, query_content):
 
     for rank_value, paper_id in ranking:
         count += 1
-        if count >= page * pageSize:
-            paper = Data.papers[paper_id]
+        paper = Data.papers[paper_id]
+        if count >= page * pageSize and count < (page + 1) * pageSize:
             authors = paper.authors
             author_names = []
             for author_id in authors:
@@ -81,15 +81,13 @@ def handle_papers_query(q, query_content):
             json = paper.to_json()
             json['score'] = rank_value
             result.append(json)
-            topics = update_topics(topics, paper_id)
-        if count > (page + 1) * pageSize:
-            break
+        topics = update_topics(topics, paper)
     return {'papers': result, 'count': len(result), 'total': len(ranking), 'topics': [v for v in topics.values()]}
 
 
-def update_topics(old_topics, paper_id):
+def update_topics(old_topics, paper):
     new_topics = old_topics
-    topic_id = Data.papers_topic_label[paper_id]
+    topic_id = paper.topic
 
     if topic_id in new_topics:
         new_topics[topic_id]['number'] += 1

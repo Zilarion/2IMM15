@@ -1,10 +1,11 @@
 import sqlite3
 
-from index_computation import compute_index
+from index_computation import compute_index_and_topics
 from models.Author import Author
 from models.Paper import Paper
 from models.Data import Data
 from author_graph import AuthorGraph
+from related_papers import compute_related_papers
 
 
 # Initializes everything by loading data in memory
@@ -17,11 +18,14 @@ def initialize():
     load_models(cur)
     print("Loaded data")
 
-    print("Loading inverted index..")
-    compute_index()
-    print("Loaded inverted index")
-    print("Done")
+    compute_index_and_topics()
+
+    print("Clustering authors")
     create_author_graph()
+    print("Done clustering authors")
+
+    compute_related_papers()
+    print("Done")
 
 
 # imports the papers and authors in memory

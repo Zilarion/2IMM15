@@ -52,7 +52,10 @@ class AuthorGraph:
                 weight = edges[source][target]
                 G.add_edge(source, target, weight=weight)
 
-        Data.author_clusters = self.louvain_cluster(G)
+        clusters = self.louvain_cluster(G)
+        for cluster_id in clusters:
+            for author_id in clusters[cluster_id]:
+                Data.authors[author_id].cluster = cluster_id
 
     def louvain_cluster(self, G, minimum_cluster_size=5, plot_graph=False):
         if plot_graph:
@@ -65,7 +68,7 @@ class AuthorGraph:
                  '#f781bf', '#a65628', '#984ea3',
                  '#999999', '#e41a1c', '#dede00']
 
-        clusters = []
+        clusters = dict()
         for com in set(partition.values()):
             count = count + 1.
             list_nodes = [nodes for nodes in partition.keys()
@@ -73,7 +76,7 @@ class AuthorGraph:
             if len(list_nodes) > minimum_cluster_size:
                 if plot_graph:
                     nx.draw_networkx_nodes(G, pos, list_nodes, node_size=20, node_color=str(colors[com % 9]))
-                clusters.append({com: list_nodes})
+                clusters[com] = list_nodes
 
         print("With minimum ", minimum_cluster_size, ":", len(clusters))
         if plot_graph:

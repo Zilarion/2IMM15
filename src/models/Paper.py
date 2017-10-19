@@ -11,6 +11,8 @@ class Paper:
         self.abstract = abstract
         self.paper_text = paper_text
         self.authors = set()
+        self.related_papers = dict()
+        self.topic = '-'
 
     def add_author(self, author_id):
         self.authors.add(author_id)
@@ -22,14 +24,11 @@ class Paper:
         authors = []
         for author_id in self.authors:
             authors.append(Data.authors[author_id].to_json(with_co_authors))
-        topic = '-'
-        if self.id in Data.papers_topic_label:
-            topic = Data.papers_topic_label[self.id]
         return {
             'id': self.id,
             'title': self.title,
             'year': self.year,
             'authors': authors,
             'link': 'https://papers.nips.cc/paper/' + self.pdf_name,
-            'topic': topic
+            'topic': self.topic
             }
