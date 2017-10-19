@@ -30,6 +30,7 @@ const PaperList = (props: PaperListProps) => {
 				score={paper.score ? paper.score : undefined}
 				animTime={animTime}
 				showLink={true}
+				influence={paper.influence}
 			/>
 		});
 

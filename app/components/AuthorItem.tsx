@@ -46,6 +46,11 @@ const SubTitleContainer = styled.div`
 	font-size: 12px;
 `;
 
+const InfluenceContainer = styled.div`
+	font-size: 10px;
+	color: ${(props: any) => props.theme.colors.link};
+`;
+
 const DataContainer = styled.div`
   display: inline-block;
   width: calc(100% - 83px);
@@ -84,6 +89,7 @@ const AuthorItem = (props: AuthorType & {showLink: boolean}) => {
 		coAuthors = <SubTitleContainer>Worked with: {coAuthorString}</SubTitleContainer>;
 	}
 	let authorScore = props.score ? props.score.toFixed(2) : '';
+	let influence = props.influence ? props.influence.toFixed(2) : '0';
 
 	const link = props.showLink ? <StyledRouterLink to={'/author/' + props.id}>{props.name}</StyledRouterLink> : props.name;
 	return (
@@ -91,6 +97,9 @@ const AuthorItem = (props: AuthorType & {showLink: boolean}) => {
 			<AuthorScoreContainer>{authorScore}</AuthorScoreContainer>
 			<IconContainer>
 				<i className="material-icons">person</i>
+				<InfluenceContainer>
+					{influence}
+				</InfluenceContainer>
 			</IconContainer>
 			<DataContainer>
 				{link}

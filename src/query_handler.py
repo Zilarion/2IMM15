@@ -98,7 +98,7 @@ def update_topics(old_topics, paper):
 
 def handle_paper_query(q):
     paper_id = q
-    return {'paper': Data.papers[paper_id].to_json()}
+    return {'paper': Data.papers[paper_id].to_json(with_related=True)}
 
 
 def handle_author_query(q):

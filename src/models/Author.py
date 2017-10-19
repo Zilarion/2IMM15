@@ -8,6 +8,7 @@ class Author:
         self.co_authors = set()
         self.papers = set()
         self.cluster = None
+        self.influence = 0
 
     def add_co_author(self, authors):
         for coauthor in authors:
@@ -21,7 +22,11 @@ class Author:
         return "id: " + str(self.id) + " name: " + self.name
 
     def to_json(self, with_co_authors=False, with_papers=False):
-        result = {'id': self.id, 'name': self.name}
+        result = {
+            'id': self.id,
+            'name': self.name,
+            'influence': self.influence
+        }
 
         if with_co_authors:
             co_authors = []
@@ -33,8 +38,9 @@ class Author:
             papers = []
             for paper_id in self.papers:
                 papers.append(Data.papers[paper_id].to_json())
-            result['paper'] = papers
+            result['papers'] = papers
 
         if self.cluster is not None:
             result['cluster'] = self.cluster
+
         return result

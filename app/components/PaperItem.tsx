@@ -79,6 +79,12 @@ const IconContainer = styled.div`
 	height: 28px;
 `;
 
+const InfluenceContainer = styled.div`
+	font-size: 10px;
+	color: ${(props: any) => props.theme.colors.link};
+`;
+
+
 const PaperItem = (props: PaperType & {showLink: boolean}) => {
 	let authorNames = [];
 	for (const author of props.authors)
@@ -89,6 +95,7 @@ const PaperItem = (props: PaperType & {showLink: boolean}) => {
 		authorString = 'Authors: ' + authorString;
 
 	let paperScore = props.score ? props.score.toFixed(2) : '';
+	let influence = props.influence ? props.influence : '0';
 
 	const link = props.showLink ? <StyledRouterLink to={'/paper/' + props.id}>{props.title} ({props.year})</StyledRouterLink> : props.title;
 	return (
@@ -96,6 +103,9 @@ const PaperItem = (props: PaperType & {showLink: boolean}) => {
 			<PaperScoreContainer>{paperScore}</PaperScoreContainer>
 			<IconContainer>
 				<i className="material-icons">description</i>
+				<InfluenceContainer>
+					{influence}
+				</InfluenceContainer>
 			</IconContainer>
 			<DataContainer>
 				{link}<br />

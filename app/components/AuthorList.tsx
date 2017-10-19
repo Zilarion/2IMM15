@@ -27,6 +27,7 @@ const AuthorList = (props: AuthorListProps) => {
 				coAuthors={author.coAuthors}
 				animTime={animTime}
 				showLink={true}
+				influence={author.influence}
 			/>
 		});
 

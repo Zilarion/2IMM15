@@ -1,6 +1,7 @@
 import sqlite3
 
 from index_computation import compute_index_and_topics
+from load_influence import load_influence
 from models.Author import Author
 from models.Paper import Paper
 from models.Data import Data
@@ -14,22 +15,19 @@ def initialize():
     con = sqlite3.connect("src/data/database.sqlite")
 
     cur = con.cursor()
-    print("Loading data..")
     load_models(cur)
-    print("Loaded data")
 
+    load_influence()
     compute_index_and_topics()
-
-    print("Clustering authors")
     create_author_graph()
-    print("Done clustering authors")
-
     compute_related_papers()
     print("Done")
 
 
 # imports the papers and authors in memory
 def load_models(cursor):
+
+    print("Loading data..")
     for row in cursor.execute('SELECT * FROM papers'):
         paper = Paper(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
         Data.add_paper(paper)
@@ -49,7 +47,10 @@ def load_models(cursor):
         for author in paper.authors:
             if author in Data.authors:
                 Data.authors[author].add_co_author(paper.authors)
+    print("Loaded data")
 
 
 def create_author_graph():
+    print("Loading author clusters")
     AuthorGraph().load()
+    print("Done loading author clusters")

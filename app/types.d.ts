@@ -3,6 +3,7 @@ type AuthorType = {
 	name: string,
 	score?: number,
 	animTime: number,
+	influence: number
 	coAuthors?: Array<AuthorType>
 	papers?: Array<PaperType>
 }
@@ -23,6 +24,8 @@ type PaperType = {
 	animTime: number,
 	year: string
 	topic: string
+	influence: number
+	related?: Array<PaperType>
 }
 
 

@@ -139,7 +139,7 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 						</PropertiesContainer>
 						<PaperContainer>
 							<DataHeader>Related papers:</DataHeader>
-							<PaperList papers={[]} />
+							<PaperList papers={this.state.paper.related} />
 						</PaperContainer>
 						<AuthorContainer>
 							<DataHeader>Authors:</DataHeader>
