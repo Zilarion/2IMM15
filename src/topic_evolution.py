@@ -21,7 +21,7 @@ def save_csv_topics(total_topics):
 
         for topId, papernr in data.items():
             save_csv_data(year, topId, papernr)
-    matlplot_vizualization()
+    # matlplot_vizualization()
 
 
 def calculate_total_per_year(papers_topic_label, total_topics, year):
