@@ -5,8 +5,8 @@ from nltk import *
 from nltk.corpus import stopwords
 from models.Data import Data
 from topic_model import *
-import pyLDAvis.gensim
-from numpy import array
+import topic_evolution
+
 
 
 def compute_index_and_topics():
@@ -18,10 +18,8 @@ def compute_index_and_topics():
     lda_obj = None
     bow = None
     collection_bow = dict()
-    papers_topic_label = dict() #topicId - topic Label
-
-
-    limit_id = 10000000
+    total_topics = 8
+    limit_id = 1000000
     min_limit = 0
 
     print("Loading inverted index..")
@@ -78,7 +76,7 @@ def compute_index_and_topics():
     # if gensim_dict and corpus retrieved/created
     # do lda modelling
     if corpus and gensim_dict:
-        do_lda_modelling(corpus, gensim_dict, 8)
+        do_lda_modelling(corpus, gensim_dict, total_topics)
 
     # if lda modelling is not yet done, and all collection bow is read successfully
     # create gensim_dict, corpus and lda based on the file read
@@ -87,7 +85,7 @@ def compute_index_and_topics():
         save_gensim_dict(collection_bow)
         gensim_dict = get_gensim_dict()
         corpus = get_corpus()
-        do_lda_modelling(corpus, gensim_dict, 8)
+        do_lda_modelling(corpus, gensim_dict, total_topics)
 
     if lda_obj:
         if bow: # if the docs are just indexed - bow should not be empty
@@ -103,7 +101,8 @@ def compute_index_and_topics():
                 doc = gensim_dict.doc2bow(doc_words)
                 Data.papers[docId].topic = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
-#        evaluate_graph(corpus, gensim_dict, limit=50)
+
+    topic_evolution.save_csv_topics(total_topics)
     print("Done computing topics")
 
 
