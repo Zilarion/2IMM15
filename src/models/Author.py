@@ -9,6 +9,7 @@ class Author:
         self.papers = set()
         self.cluster = None
         self.influence = 0
+        self.topics = set()
 
     def add_co_author(self, authors):
         for coauthor in authors:
