@@ -71,7 +71,7 @@ def filter_tokens(docs_tokens):
     filtr_docs_tokens = dict()
     for docId, tokens in docs_tokens.items():
         filtr_docs_tokens[docId] = [token for token in tokens if len(token) > 2
-                                    or (not token.isdigit())]
+                                    and (not token.isdigit())]
     return filtr_docs_tokens
 
 

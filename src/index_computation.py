@@ -85,7 +85,7 @@ def compute_index_and_topics():
         save_gensim_dict(collection_bow)
         gensim_dict = get_gensim_dict()
         corpus = get_corpus()
-        do_lda_modelling(corpus, gensim_dict, total_topics)
+        lda_obj = do_lda_modelling(corpus, gensim_dict, total_topics)
 
     if lda_obj:
         if bow: # if the docs are just indexed - bow should not be empty
