@@ -71,12 +71,8 @@ def do_lda_modelling(corpus, dictionary, topcnr= 30):
 def filter_tokens(docs_tokens):
     filtr_docs_tokens = dict()
     for docId, tokens in docs_tokens.items():
-<<<<<<< HEAD
-        filtr_docs_tokens[docId] = [token for token in tokens if not token.isdigit()]
-=======
         filtr_docs_tokens[docId] = [token for token in tokens if len(token) > 2
                                     and (not token.isdigit())]
->>>>>>> origin/master
     return filtr_docs_tokens
 
 
