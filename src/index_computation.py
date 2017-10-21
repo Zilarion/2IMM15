@@ -8,7 +8,6 @@ from topic_model import *
 import topic_evolution
 
 
-
 def compute_index_and_topics():
     loaded_index = dict()
     result_length = dict()
@@ -28,7 +27,7 @@ def compute_index_and_topics():
             data = file.readlines()
             for line in data:
                 line_data = dict(json.loads(line.rstrip()))
-                if min_limit <  line_data["id"] < limit_id:
+                if min_limit < line_data["id"] < limit_id:
                     loaded_index[line_data["id"]] = line_data["inverted_index"]
                     collection_bow[line_data["id"]] = [words for words, freq in (loaded_index[line_data["id"]]).items()]
             gensim_dict = get_gensim_dict()
@@ -72,16 +71,7 @@ def compute_index_and_topics():
     Data.length = result_length
     print("Reconstructed inv index")
 
-    print("Computing topics")
-    # if gensim_dict and corpus retrieved/created
-    # do lda modelling
-    if corpus and gensim_dict:
-        do_lda_modelling(corpus, gensim_dict, total_topics)
-
-    # if lda modelling is not yet done, and all collection bow is read successfully
-    # create gensim_dict, corpus and lda based on the file read
     lda_obj = load_ldamodel()
-    print("Done Computing Topics")
     if not lda_obj and collection_bow:
         save_gensim_dict(collection_bow)
         gensim_dict = get_gensim_dict()
@@ -90,22 +80,20 @@ def compute_index_and_topics():
 
     if lda_obj:
         if bow: # if the docs are just indexed - bow should not be empty
-            # doc_bow = [doc_words for docId, doc_words in bow.items()]
-            gensim_dict = get_gensim_dict()
+            matrix_result = dict()
+            if not gensim_dict:
+                gensim_dict = get_gensim_dict()
             for docId, doc_words in bow.items():
                 doc = gensim_dict.doc2bow(doc_words)
+                Data.papers[docId].topic = label_doc(lda_obj[doc])
+                matrix_result[docId] = lda_obj[doc]
         elif collection_bow:
             matrix_result = dict()
-            # for key, value in collection_bow.items():
-            #     print(collection_bow)
             for docId, doc_words in collection_bow.items():
                 doc = gensim_dict.doc2bow(doc_words)
                 Data.papers[docId].topic = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
 
-    print("Calculating Graph")
-    evaluate_graph(corpus, gensim_dict, limit=30)
-    topic_evolution.save_csv_topics(total_topics)
     print("Done computing topics")
 
 
