@@ -81,6 +81,7 @@ def compute_index_and_topics():
     # if lda modelling is not yet done, and all collection bow is read successfully
     # create gensim_dict, corpus and lda based on the file read
     lda_obj = load_ldamodel()
+    print("Done Computing Topics")
     if not lda_obj and collection_bow:
         save_gensim_dict(collection_bow)
         gensim_dict = get_gensim_dict()
@@ -102,6 +103,8 @@ def compute_index_and_topics():
                 Data.papers[docId].topic = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
 
+    print("Calculating Graph")
+    evaluate_graph(corpus, gensim_dict, limit=30)
     topic_evolution.save_csv_topics(total_topics)
     print("Done computing topics")
 

@@ -1,6 +1,7 @@
 from gensim import corpora, models
 from gensim.models import CoherenceModel
 from gensim.models import LdaModel
+import matplotlib.pyplot as plt
 import os
 
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
@@ -14,7 +15,7 @@ def save_gensim_dict(docID_list_strings):
 
     words_per_docs = [coll_words for docId, coll_words in (filter_tokens(docID_list_strings)).items()]
     dictionary = corpora.Dictionary(words_per_docs)
-    dictionary.filter_extremes(no_below=500, no_above=0.4)
+    dictionary.filter_extremes(no_below=500, no_above=0.5)
     # store the dictionary, for future reference
     dictionary.save(os.path.join(TEMP_FOLDER, 'data_gensim.dict'))
     save_gensim_corpus(words_per_docs, dictionary)
@@ -58,7 +59,7 @@ def get_corpus():
             print(message)
 
 
-def do_lda_modelling(corpus, dictionary, topcnr= 50):
+def do_lda_modelling(corpus, dictionary, topcnr= 30):
     lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=topcnr,
                                    alpha='auto', eta='auto', update_every=0, chunksize=3500, passes=5)
     save_lda_model(lda)
@@ -70,8 +71,7 @@ def do_lda_modelling(corpus, dictionary, topcnr= 50):
 def filter_tokens(docs_tokens):
     filtr_docs_tokens = dict()
     for docId, tokens in docs_tokens.items():
-        filtr_docs_tokens[docId] = [token for token in tokens if len(token) > 2
-                                    or (not token.isdigit())]
+        filtr_docs_tokens[docId] = [token for token in tokens if not token.isdigit()]
     return filtr_docs_tokens
 
 
@@ -112,7 +112,7 @@ def label_doc(doc_lda_result):
     return tid_max_prob
 
 
-def evaluate_graph(corpus, dictionary, limit=50):
+def evaluate_graph(corpus, dictionary, limit=30):
     c_v = []
     lm_list = []
     for num_topics in range(1, limit):
@@ -120,4 +120,12 @@ def evaluate_graph(corpus, dictionary, limit=50):
         lm_list.append(lm)
         cm = CoherenceModel(model=lm, corpus=corpus, dictionary=dictionary, coherence='u_mass')
         c_v.append(cm.get_coherence())
+
+        # Show graph
+        x = range(1, limit)
+        plt.plot(x, c_v)
+        plt.xlabel("num_topics")
+        plt.ylabel("Coherence score")
+        plt.legend(("c_v"), loc='best')
+        plt.show()
     return lm_list
