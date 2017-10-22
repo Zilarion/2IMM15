@@ -1,11 +1,20 @@
 import * as React from 'react';
 import style      from 'styled-components';
+import {Link} from "react-router-dom";
 
 const TopicListContainer = style.div`
     text-align: left;
     width: calc(100% - ${(props: any) => props.theme.margins.smallx4});
     margin: ${(props: any) => props.theme.margins.small};
     padding: ${(props: any) => props.theme.margins.small};
+`;
+
+const StyledRouterLink = style(Link)`
+	text-decoration: none;
+	color: ${(props: any) => props.theme.colors.accent};
+	&:hover {
+		color: ${(props: any) => props.theme.colors.hover};
+	}
 `;
 
 const HeaderTopic = style.span`
@@ -16,6 +25,8 @@ const HeaderTopic = style.span`
 
 interface TopicListProps {
 	topics: Array<TopicType>
+	query: string
+	domain: string
 }
 
 const TopicList = (props: TopicListProps) => {
@@ -27,7 +38,7 @@ const TopicList = (props: TopicListProps) => {
 			return (
 				<tr key={index}>
 					<td>({topic.number})</td>
-					<td>{topic.label}</td>
+					<td><StyledRouterLink to={'/search/' + props.domain + '/' + props.query + '/' + topic.label}>{topic.label}</StyledRouterLink> </td>
 				</tr>
 			);
 		});

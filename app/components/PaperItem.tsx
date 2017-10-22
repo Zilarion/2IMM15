@@ -111,6 +111,7 @@ const PaperItem = (props: PaperType & {showLink: boolean}) => {
 				{link}<br />
 				<StyledLink target="_blank" href={props.link}>{props.link}</StyledLink>
 				<SubTitleContainer>{authorString}</SubTitleContainer>
+				<SubTitleContainer>{props.topic}</SubTitleContainer>
 			</DataContainer>
 		</PaperItemContainer>
 	);

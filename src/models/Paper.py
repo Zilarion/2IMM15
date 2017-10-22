@@ -32,10 +32,20 @@ class Paper:
             'related': [],
             'influence': self.influence
         }
+        authors = []
         for author_id in self.authors:
-            result['authors'].append(Data.authors[author_id].to_json(with_co_authors))
+            authors.append(Data.authors[author_id])
+        authors.sort(key=lambda x: x.influence, reverse=True)
+        for author in authors[:20]:
+            result['authors'].append(author.to_json(with_co_authors))
 
+        related_papers = []
         if with_related:
             for paper_id in self.related_papers:
-                result['related'].append(Data.papers[paper_id].to_json())
+                if paper_id in Data.papers:
+                    related_papers.append(Data.papers[paper_id])
+        related_papers.sort(key=lambda x: x.influence, reverse=True)
+        for related_paper in related_papers[:20]:
+            result['related'].append(related_paper.to_json())
+
         return result

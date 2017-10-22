@@ -23,7 +23,7 @@ type PaperType = {
 	score?: number,
 	animTime: number,
 	year: string
-	topic: string
+	topic?: string
 	influence: number
 	related?: Array<PaperType>
 }

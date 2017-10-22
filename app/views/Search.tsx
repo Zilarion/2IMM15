@@ -104,16 +104,16 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 	componentWillReceiveProps(nextProps: SearchProps) {
 		let oldUrl = this.props.match.params;
 		let newUrl = nextProps.match.params;
-		if (oldUrl.domain !== newUrl.domain || oldUrl.query !== newUrl.query || oldUrl.page !== newUrl.page) {
+		if (oldUrl.domain !== newUrl.domain || oldUrl.query !== newUrl.query || oldUrl.topic !== newUrl.topic) {
 			this.queryForUrl(newUrl);
 		}
 	}
 
-	queryForUrl(url: {query: string, domain: string, page: string}) {
+	queryForUrl(url: {query: string, domain: string, topic: string}) {
 		this.queryData( {
 			query: url.query,
 			domain: url.domain,
-			page: parseInt(url.page) || 0
+			topic: parseInt(url.topic) || 0
 		})
 	}
 
@@ -149,7 +149,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		})
 	}
 
-	queryData(postData: { query: string, domain: string, page: number }) {
+	queryData(postData: { query: string, domain: string, topic: number }) {
 		this.setState({
 			...this.state,
 			loading: true
@@ -179,12 +179,12 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		const domain = this.props.match.params.domain || 'papers';
 		this.props.history.push('/search/' + domain + '/' + value);
 
-		const page = this.props.match.params.page || 0;
+		const topic = this.props.match.params.topic || 0;
 
 		this.queryData({
 			query: value,
 			domain: domain,
-			page: page
+			topic: topic
 		});
 	}
 
@@ -212,7 +212,11 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 				searchResult = <LoadingIndicator />
 			} else {
 				let topics = (<TopicContainer>
-						<TopicList topics={this.state.topics}/>
+						<TopicList
+							topics={this.state.topics}
+							query={params.query}
+							domain={params.domain}
+						/>
 					</TopicContainer>
 				);
 				let resultHeader = (

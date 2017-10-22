@@ -23,7 +23,6 @@ const PaperList = (props: PaperListProps) => {
 				key={paper.id}
 				id={paper.id}
 				title={paper.title}
-				topic={paper.topic}
 				year={paper.year}
 				authors={paper.authors}
 				link={paper.link}

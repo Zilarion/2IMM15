@@ -11,22 +11,6 @@ class AuthorGraph:
     paths = dict()
 
     def load(self):
-        # try:
-        #     with open('author_graph.txt', 'r') as file:
-        #         data = file.readlines()
-        #         for line in data:
-        #             line_data = dict(json.loads(line.rstrip()))
-        #             if line_data["id"] < limit_id:
-        #                 loaded_index[line_data["id"]] = line_data["inverted_index"]
-        #         print("LOADING/READING")
-        #         gensim_dict = get_gensim_dict()
-        #         corpus = get_corpus()
-        #
-        # except FileNotFoundError:
-        #     print("No author_graph file yet.. computing!")
-        #     self.compute_graph()
-        #
-        # with open('author_graph.txt', 'a') as file:
         self.compute_graph()
 
     def compute_graph(self):
@@ -57,11 +41,11 @@ class AuthorGraph:
             for author_id in clusters[cluster_id]:
                 Data.authors[author_id].cluster = cluster_id
 
-    def louvain_cluster(self, G, minimum_cluster_size=5, plot_graph=False):
+    def louvain_cluster(self, G, minimum_cluster_size=2, plot_graph=False):
         if plot_graph:
             import matplotlib.pyplot as plt
 
-        partition = community.best_partition(G, resolution=100)
+        partition = community.best_partition(G, resolution=.8)
         pos = nx.spring_layout(G)
         count = 0.
         colors = ['#377eb8', '#ff7f00', '#4daf4a',
@@ -78,7 +62,7 @@ class AuthorGraph:
                     nx.draw_networkx_nodes(G, pos, list_nodes, node_size=20, node_color=str(colors[com % 9]))
                 clusters[com] = list_nodes
 
-        print("With minimum ", minimum_cluster_size, ":", len(clusters))
+        print("Amount of clusters with minimum size ", minimum_cluster_size, ":", len(clusters))
         if plot_graph:
             plt.show()
 
