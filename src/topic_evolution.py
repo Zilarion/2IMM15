@@ -1,5 +1,4 @@
 from models.Data import Data
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
@@ -58,7 +57,7 @@ def save_csv_data(year, topic, total_papers):
         print(message)
 
 
-def matlplot_vizualization():
+def matlplot_vizualization(show_plot=False):
     file = os.path.join(TEMP_FOLDER, 'topic_evol.csv')
     df = pd.read_csv(file)
     df.year = df['year']
@@ -84,28 +83,30 @@ def matlplot_vizualization():
     q6_papers = df.query('topic == 6')['total_papers']
     q7_papers = df.query('topic == 7')['total_papers']
 
-    po = plt.bar(q0['year'], q0_papers, width, bottom=q1_papers)
-    p1 = plt.bar(q1['year'], q1_papers, width)
-    p2 = plt.bar(q2['year'], q2_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers))
-    p3 = plt.bar(q3['year'], q3['total_papers'], width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers))
-    p4 = plt.bar(q4['year'], q4_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                                                      np.array(q3_papers))
-    p5 = plt.bar(q5['year'], q5_papers, width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                        np.array(q3_papers) + np.array(q4_papers))
-    p6 = plt.bar(q6['year'], q6_papers, width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                        np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers))
-    p7 = plt.bar(q7['year'], q7_papers, width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                        np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers) + np.array(q6_papers))
+    if show_plot:
+        import matplotlib.pyplot as plt
+        po = plt.bar(q0['year'], q0_papers, width, bottom=q1_papers)
+        p1 = plt.bar(q1['year'], q1_papers, width)
+        p2 = plt.bar(q2['year'], q2_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers))
+        p3 = plt.bar(q3['year'], q3['total_papers'], width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers))
+        p4 = plt.bar(q4['year'], q4_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                                                          np.array(q3_papers))
+        p5 = plt.bar(q5['year'], q5_papers, width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                            np.array(q3_papers) + np.array(q4_papers))
+        p6 = plt.bar(q6['year'], q6_papers, width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                            np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers))
+        p7 = plt.bar(q7['year'], q7_papers, width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                            np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers) + np.array(q6_papers))
 
-    plt.ylabel('Total Papers')
-    plt.title('Papers per topic')
+        plt.ylabel('Total Papers')
+        plt.title('Papers per topic')
 
-    plt.legend((po[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0], p7[0]),
-               ('Topic 0', 'Topic 1', 'Topic 2', 'Topic 3', 'Topic 4',
-                'Topic 5', 'Topic 6', 'Topic 7'))
+        plt.legend((po[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0], p7[0]),
+                   ('Topic 0', 'Topic 1', 'Topic 2', 'Topic 3', 'Topic 4',
+                    'Topic 5', 'Topic 6', 'Topic 7'))
 
-    plt.show()
+        plt.show()
