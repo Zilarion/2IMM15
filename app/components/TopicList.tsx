@@ -34,7 +34,13 @@ const TopicList = (props: TopicListProps) => {
 	if (props.topics.length == 0)
 		return (<div />);
 	else {
-		topics = props.topics.map((topic: TopicType, index: number) => {
+		let topicArray = props.topics;
+		topicArray.sort((a, b) => {
+			if (a.label < b.label) return -1;
+			if (a.label > b.label) return 1;
+			return 0;
+		});
+		topics = topicArray.map((topic: TopicType, index: number) => {
 			return (
 				<tr key={index}>
 					<td>({topic.number})</td>
