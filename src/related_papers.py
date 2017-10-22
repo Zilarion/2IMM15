@@ -19,7 +19,7 @@ def compute_related_papers():
             # Already loaded
             if p1.id in related_papers:
                 for paper_id in related_papers[p1.id]:
-                    p1.related_papers.add(Data.papers[paper_id])
+                    p1.related_papers.add(paper_id)
                 continue
 
             # Compute, not in file yet
