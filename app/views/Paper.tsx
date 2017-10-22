@@ -133,6 +133,7 @@ class PaperWithoutRouter extends React.Component<PaperProps, PaperState> {
 								link={this.state.paper.link}
 								year={this.state.paper.year}
 								topic={this.state.paper.topic}
+								influence={this.state.paper.influence}
 								animTime={0}
 								showLink={false}
 							/>

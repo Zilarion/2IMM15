@@ -1,10 +1,10 @@
 from models.Data import Data
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
 import csv
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
 

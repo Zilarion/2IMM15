@@ -152,3 +152,4 @@ ENV/
 
 #temp folder
 temp/
+/related_papers.txt
