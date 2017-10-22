@@ -113,7 +113,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		this.queryData( {
 			query: url.query,
 			domain: url.domain,
-			topic: parseInt(url.topic) || 0
+			topic: parseInt(url.topic)
 		})
 	}
 
@@ -179,7 +179,7 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 		const domain = this.props.match.params.domain || 'papers';
 		this.props.history.push('/search/' + domain + '/' + value);
 
-		const topic = this.props.match.params.topic || 0;
+		const topic = this.props.match.params.topic;
 
 		this.queryData({
 			query: value,

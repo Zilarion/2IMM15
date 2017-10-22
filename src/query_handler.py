@@ -72,7 +72,7 @@ def handle_papers_query(q, query_content):
         paper = Data.papers[paper_id]
         if topic is None or paper.topic == topic:
             count += 1
-            if count < pageSize:
+            if count <= pageSize:
                 authors = paper.authors
                 author_names = []
                 for author_id in authors:
