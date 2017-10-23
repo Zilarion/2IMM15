@@ -93,7 +93,7 @@ def compute_index_and_topics():
                 doc = gensim_dict.doc2bow(doc_words)
                 Data.papers[docId].topic = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
-
+    pprint(lda_obj.print_topics())
     print("Done computing topics")
 
 
