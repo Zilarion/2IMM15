@@ -15,29 +15,34 @@ class Evolution extends React.Component<EvolutionProps, {image: any}> {
 
 	componentDidMount() {
 		const image = new window.Image();
-		image.src = 'http://konvajs.github.io/assets/yoda.jpg';
+		image.src = 'https://raw.githubusercontent.com/JeroenvanDoorenmalen/Information_retrieval/master/final_areachart.png';
 		image.onload = () => {
 			this.setState({
-				image: image
+				image
+			});
+		}
+		const image1 = new window.Image();
+		image1.src = 'https://raw.githubusercontent.com/JeroenvanDoorenmalen/Information_retrieval/master/final_barchart.png';
+		image1.onload = () => {
+			this.setState({
+				image1
 			});
 		}
 	}
 
 	render() {
 		return (
-			<Stage width={700} height={700}>
+			<Stage width={2400} height={1500}>
 				<Layer>
-					<Rect
-						x={300}
-						y={10}
-						width={50}
-						height={50}
-						fill={'black'}
-						shadowBlur={5}
-					/>
 					<Image
 						image={this.state.image}
-						y={50}
+						y={0}
+						x={500}
+					/>
+					<Image
+						image={this.state.image1}
+						y={750}
+						x={500}
 					/>
 				</Layer>
 			</Stage>

@@ -1,6 +1,7 @@
 from gensim import corpora, models
 from gensim.models import CoherenceModel
-from gensim.models import LdaMulticore
+from gensim.models import LdaModel
+
 import os
 from nltk.stem import WordNetLemmatizer
 
@@ -61,8 +62,8 @@ def get_corpus():
 
 
 def do_lda_modelling(corpus, dictionary, topcnr= 30):
-    lda = models.ldamulticore.LdaMulticore(workers=3, corpus=corpus, id2word=dictionary, num_topics=topcnr,
-                                eta='auto', chunksize=3500, passes=5)
+    lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=topcnr,
+                                   alpha='auto', eta='auto', update_every=0, chunksize=3500, passes=50)
     save_lda_model(lda)
     return lda
 

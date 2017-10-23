@@ -31,9 +31,6 @@ def calculate_total_per_year(papers_topic_label, total_topics, year):
     for topic_id in range(0, total_topics):
         total = [doc_id for doc_id, paper in papers_topic_label.items() if paper.topic == topic_id
                  and doc_id in paper_year]
-        print(topic_id)
-        print(total)
-        print("***************")
         results[topic_id] = len(total)
     return results
 
