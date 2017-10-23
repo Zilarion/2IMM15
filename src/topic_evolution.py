@@ -3,8 +3,6 @@ import numpy as np
 import pandas as pd
 import os
 import csv
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
 
@@ -62,7 +60,7 @@ def save_csv_data(year, topic, total_papers):
         print(message)
 
 
-def stacked_barplot():
+def stacked_barplot(do_plot=False):
     file = os.path.join(TEMP_FOLDER, 'topic_evol.csv')
     df = pd.read_csv(file)
     df.year = df['year']
@@ -88,36 +86,40 @@ def stacked_barplot():
     q6_papers = df.query('topic == 6')['total_papers']
     q7_papers = df.query('topic == 7')['total_papers']
 
-    pal = sns.color_palette("Set2", 8)
 
-    po = plt.bar(q0['year'], q0_papers, width, color=pal[0])
-    p1 = plt.bar(q1['year'], q1_papers, width, bottom=q0_papers, color=pal[1])
-    p2 = plt.bar(q2['year'], q2_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers), color=pal[2])
-    p3 = plt.bar(q3['year'], q3['total_papers'], width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers), color=pal[3])
-    p4 = plt.bar(q4['year'], q4_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                                                      np.array(q3_papers), color=pal[4])
-    p5 = plt.bar(q5['year'], q5_papers, width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                        np.array(q3_papers) + np.array(q4_papers), color=pal[5])
-    p6 = plt.bar(q6['year'], q6_papers, width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                        np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers), color=pal[6])
-    p7 = plt.bar(q7['year'], q7_papers, width,
-                 bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
-                        np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers) + np.array(q6_papers),
-                 color=pal[7])
+    if do_plot:
+        import seaborn as sns
+        import matplotlib.pyplot as plt
 
-    plt.ylabel('Total Papers')
-    plt.title('Papers per topic')
-    plt.legend((po[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0], p7[0]),
-               ('Topic 0', 'Topic 1', 'Topic 2', 'Topic 3', 'Topic 4',
-                'Topic 5', 'Topic 6', 'Topic 7'))
+        pal = sns.color_palette("Set2", 8)
+        po = plt.bar(q0['year'], q0_papers, width, color=pal[0])
+        p1 = plt.bar(q1['year'], q1_papers, width, bottom=q0_papers, color=pal[1])
+        p2 = plt.bar(q2['year'], q2_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers), color=pal[2])
+        p3 = plt.bar(q3['year'], q3['total_papers'], width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers), color=pal[3])
+        p4 = plt.bar(q4['year'], q4_papers, width, bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                                                          np.array(q3_papers), color=pal[4])
+        p5 = plt.bar(q5['year'], q5_papers, width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                            np.array(q3_papers) + np.array(q4_papers), color=pal[5])
+        p6 = plt.bar(q6['year'], q6_papers, width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                            np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers), color=pal[6])
+        p7 = plt.bar(q7['year'], q7_papers, width,
+                     bottom=np.array(q0_papers) + np.array(q1_papers) + np.array(q2_papers) +
+                            np.array(q3_papers) + np.array(q4_papers) + np.array(q5_papers) + np.array(q6_papers),
+                     color=pal[7])
 
-    plt.show()
+        plt.ylabel('Total Papers')
+        plt.title('Papers per topic')
+        plt.legend((po[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0], p7[0]),
+                   ('Topic 0', 'Topic 1', 'Topic 2', 'Topic 3', 'Topic 4',
+                    'Topic 5', 'Topic 6', 'Topic 7'))
+
+        plt.show()
 
 
-def stacked_area():
+def stacked_area(do_plot=False):
     file = os.path.join(TEMP_FOLDER, 'topic_evol.csv')
     df = pd.read_csv(file)
     df.year = df['year']
@@ -142,15 +144,19 @@ def stacked_area():
     q6_papers = df.query('topic == 6')['total_papers']
     q7_papers = df.query('topic == 7')['total_papers']
 
-    pal = sns.color_palette("Set2", 8)
     year = q0['year']
-    plt.stackplot(year, q0_papers, q1_papers, q2_papers, q3_papers,
-                  q4_papers, q5_papers, q6_papers, q7_papers, colors=pal, labels=['Topic 0',
-                                                                                  'Topic 1', 'Topic 2', 'Topic 3',
-                                                                                  'Topic 4',
-                                                                                  'Topic 5', 'Topic 6', 'Topic 7'])
+    if do_plot:
+        import seaborn as sns
+        import matplotlib.pyplot as plt
 
-    plt.ylabel('Total Papers')
-    plt.title('Papers per topic')
-    plt.legend(loc='upper left')
-    plt.show()
+        pal = sns.color_palette("Set2", 8)
+        plt.stackplot(year, q0_papers, q1_papers, q2_papers, q3_papers,
+                      q4_papers, q5_papers, q6_papers, q7_papers, colors=pal, labels=['Topic 0',
+                                                                                      'Topic 1', 'Topic 2', 'Topic 3',
+                                                                                      'Topic 4',
+                                                                                      'Topic 5', 'Topic 6', 'Topic 7'])
+
+        plt.ylabel('Total Papers')
+        plt.title('Papers per topic')
+        plt.legend(loc='upper left')
+        plt.show()
