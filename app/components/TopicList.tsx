@@ -7,6 +7,7 @@ const TopicListContainer = style.div`
     width: calc(100% - ${(props: any) => props.theme.margins.smallx4});
     margin: ${(props: any) => props.theme.margins.small};
     padding: ${(props: any) => props.theme.margins.small};
+    font-size: 14px;
 `;
 
 const StyledRouterLink = style(Link)`

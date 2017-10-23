@@ -1,4 +1,14 @@
 from models.Data import Data
+mapping = {
+    0: 'Classifier optimization',
+    1: 'Prediction and detection',
+    2: 'Graph theory',
+    3: 'Algorithmic optimization',
+    4: 'Others',
+    5: 'Image recognition',
+    6: 'Statistical learning',
+    7: 'Pattern recognition',
+}
 
 
 class Paper:
@@ -27,7 +37,7 @@ class Paper:
             'title': self.title,
             'year': self.year,
             'link': 'https://papers.nips.cc/paper/' + self.pdf_name,
-            'topic': self.topic,
+            'topic': mapping[self.topic],
             'authors': [],
             'related': [],
             'influence': self.influence
