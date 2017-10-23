@@ -1,5 +1,6 @@
 import sqlite3
 
+from autor_topic_information import determine_topics
 from index_computation import compute_index_and_topics
 from load_influence import load_influence
 from models.Author import Author
@@ -21,6 +22,7 @@ def initialize():
     create_author_graph()
     compute_index_and_topics()
     compute_related_papers()
+    determine_topics()
     print("Done")
 
 

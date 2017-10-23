@@ -6,6 +6,7 @@ type AuthorType = {
 	influence: number
 	coAuthors?: Array<AuthorType>
 	papers?: Array<PaperType>
+	topics?: Array<string>
 }
 
 

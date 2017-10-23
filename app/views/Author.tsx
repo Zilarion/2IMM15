@@ -127,6 +127,7 @@ class AuthorWithoutRouter extends React.Component<AuthorProps, AuthorState> {
 							id={this.state.author.id}
 							name={this.state.author.name}
 							influence={this.state.author.influence}
+							topics={this.state.author.topics}
 							coAuthors={[]}
 							animTime={0}
 							showLink={false}
