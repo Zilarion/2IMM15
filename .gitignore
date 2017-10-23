@@ -153,3 +153,4 @@ ENV/
 #temp folder
 temp/
 /related_papers.txt
+/author_graph.txt

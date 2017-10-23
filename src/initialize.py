@@ -18,8 +18,8 @@ def initialize():
     load_models(cur)
 
     load_influence()
-    compute_index_and_topics()
     create_author_graph()
+    compute_index_and_topics()
     compute_related_papers()
     print("Done")
 
