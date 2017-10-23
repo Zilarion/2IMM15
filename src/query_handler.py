@@ -5,17 +5,9 @@ from index_computation import query, queryLM
 from models.Data import Data
 import time
 
+from topic_model import map_topic_ids
+
 pageSize = 20
-mapping = {
-    0: 'Classifier optimization',
-    1: 'Prediction and detection',
-    2: 'Graph theory',
-    3: 'Algorithmic optimization',
-    4: 'Others',
-    5: 'Image recognition',
-    6: 'Statistical learning',
-    7: 'Pattern recognition',
-}
 
 
 def handle_query(query_content):
@@ -97,12 +89,11 @@ def handle_papers_query(q, query_content):
 def update_topics(old_topics, paper):
     new_topics = old_topics
     topic_id = paper.topic
-    topic_id = mapping[topic_id]
 
     if topic_id in new_topics:
         new_topics[topic_id]['number'] += 1
     else:
-        new_topics[topic_id] = {'number': 1, 'label': str(topic_id)}
+        new_topics[topic_id] = {'number': 1, 'topic': map_topic_ids([topic_id])}
     return new_topics
 
 

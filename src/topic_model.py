@@ -133,3 +133,20 @@ def evaluate_graph(corpus, dictionary, limit=30, plot_graph=False):
             plt.legend(("c_v"), loc='best')
             plt.show()
     return lm_list
+
+
+def map_topic_ids(topics):
+    topics_mapping = {
+        0: 'Classifier optimization',
+        1: 'Prediction and detection',
+        2: 'Graph theory',
+        3: 'Algorithmic optimization',
+        4: 'Others',
+        5: 'Image recognition',
+        6: 'Statistical learning',
+        7: 'Pattern recognition',
+    }
+    result = []
+    for topic_id in topics:
+        result.append({'name': topics_mapping[topic_id], 'id': topic_id})
+    return result

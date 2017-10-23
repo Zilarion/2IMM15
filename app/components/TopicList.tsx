@@ -37,15 +37,15 @@ const TopicList = (props: TopicListProps) => {
 	else {
 		let topicArray = props.topics;
 		topicArray.sort((a, b) => {
-			if (a.label < b.label) return -1;
-			if (a.label > b.label) return 1;
+			if (a.topic[0].name < b.topic[0].name) return -1;
+			if (a.topic[0].name > b.topic[0].name) return 1;
 			return 0;
 		});
 		topics = topicArray.map((topic: TopicType, index: number) => {
 			return (
 				<tr key={index}>
 					<td>({topic.number})</td>
-					<td><StyledRouterLink to={'/search/' + props.domain + '/' + props.query + '/' + topic.label}>{topic.label}</StyledRouterLink> </td>
+					<td><StyledRouterLink to={'/search/' + props.domain + '/' + props.query + '/' + topic.topic[0].id}>{topic.topic[0].name}</StyledRouterLink> </td>
 				</tr>
 			);
 		});

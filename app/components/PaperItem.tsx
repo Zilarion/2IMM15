@@ -84,7 +84,6 @@ const InfluenceContainer = styled.div`
 	color: ${(props: any) => props.theme.colors.link};
 `;
 
-
 const PaperItem = (props: PaperType & {showLink: boolean}) => {
 	let authorNames = [];
 	for (const author of props.authors)
@@ -111,7 +110,7 @@ const PaperItem = (props: PaperType & {showLink: boolean}) => {
 				{link}<br />
 				<StyledLink target="_blank" href={props.link}>{props.link}</StyledLink>
 				<SubTitleContainer>{authorString}</SubTitleContainer>
-				<SubTitleContainer>{props.topic ? 'Topic: ' + props.topic : ''}</SubTitleContainer>
+				<SubTitleContainer>{props.topic ? 'Topic: ' + props.topic[0].name : ''}</SubTitleContainer>
 			</DataContainer>
 		</PaperItemContainer>
 	);

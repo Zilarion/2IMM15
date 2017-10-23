@@ -1,15 +1,6 @@
 from models.Data import Data
+from topic_model import map_topic_ids
 
-mapping = {
-    0: 'Classifier optimization',
-    1: 'Prediction and detection',
-    2: 'Graph theory',
-    3: 'Algorithmic optimization',
-    4: 'Others',
-    5: 'Image recognition',
-    6: 'Statistical learning',
-    7: 'Pattern recognition',
-}
 
 class Author:
     def __init__(self, id, name):
@@ -37,13 +28,10 @@ class Author:
             'id': self.id,
             'name': self.name,
             'influence': self.influence,
-            'topics': [],
+            'topics': map_topic_ids(list(self.topics)),
             'coAuthors': [],
             'papers': []
         }
-
-        for topic in self.topics:
-            result['topics'].append(mapping[topic])
 
         if with_co_authors:
             co_authors = []

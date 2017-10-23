@@ -6,13 +6,20 @@ type AuthorType = {
 	influence: number
 	coAuthors?: Array<AuthorType>
 	papers?: Array<PaperType>
-	topics?: Array<string>
+	topics?: Array<Topic>
 }
 
+type Topic = Array<{
+	id: string
+	name: string
+}>
 
 type TopicType = {
 	number: number,
-	label: string
+	topic: Array<{
+		id: string
+		name: string
+	}>
 }
 
 
@@ -24,7 +31,7 @@ type PaperType = {
 	score?: number,
 	animTime: number,
 	year: string
-	topic?: string
+	topic?: Topic
 	influence: number
 	related?: Array<PaperType>
 }
