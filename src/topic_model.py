@@ -138,14 +138,14 @@ def evaluate_graph(corpus, dictionary, limit=30, plot_graph=False):
 
 def map_topic_ids(topics):
     topics_mapping = {
-        0: 'Classifier optimization',
-        1: 'Prediction and detection',
-        2: 'Graph theory',
-        3: 'Algorithmic optimization',
-        4: 'Others',
-        5: 'Image recognition',
+        0: 'Pattern recognition optimization',
+        1: 'Graph theory',
+        2: 'Neural net design',
+        3: 'Image recognition',
+        4: 'Stochastic process',
+        5: 'Neural net application',
         6: 'Statistical learning',
-        7: 'Pattern recognition',
+        7: 'Mathematical model',
     }
     result = []
     for topic_id in topics:
