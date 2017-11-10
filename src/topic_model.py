@@ -2,6 +2,7 @@ from gensim import corpora, models
 from gensim.models import CoherenceModel
 from gensim.models import LdaModel
 import os
+from nltk.stem import WordNetLemmatizer
 
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
 
@@ -60,7 +61,7 @@ def get_corpus():
 
 def do_lda_modelling(corpus, dictionary, topcnr= 30):
     lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=topcnr,
-                                   alpha='auto', eta='auto', update_every=0, chunksize=3500, passes=5)
+                                   alpha='auto', eta='auto', update_every=0, chunksize=3500, passes=50)
     save_lda_model(lda)
     return lda
 
@@ -69,8 +70,9 @@ def do_lda_modelling(corpus, dictionary, topcnr= 30):
 # does not allow good topic modeling
 def filter_tokens(docs_tokens):
     filtr_docs_tokens = dict()
+    lemmatizer = WordNetLemmatizer()
     for docId, tokens in docs_tokens.items():
-        filtr_docs_tokens[docId] = [token for token in tokens if len(token) > 2
+        filtr_docs_tokens[docId] = [lemmatizer.lemmatize(token) for token in tokens if len(token) > 2
                                     and (not token.isdigit())]
     return filtr_docs_tokens
 

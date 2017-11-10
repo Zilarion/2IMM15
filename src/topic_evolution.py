@@ -6,6 +6,7 @@ import csv
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
 
 
@@ -111,8 +112,9 @@ def stacked_barplot():
     plt.ylabel('Total Papers')
     plt.title('Papers per topic')
     plt.legend((po[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0], p7[0]),
-               ('Topic 0', 'Topic 1', 'Topic 2', 'Topic 3', 'Topic 4',
-                'Topic 5', 'Topic 6', 'Topic 7'))
+               (['Pattern Recognition Optimization', 'Graph Theory', 'Neural Net Design',
+                 'Image Recognition', 'Stochastic Processes', 'Neural Nets Application',
+                 'Statistical Learning', 'Mathematical Model']))
 
     plt.show()
 
@@ -145,10 +147,13 @@ def stacked_area():
     pal = sns.color_palette("Set2", 8)
     year = q0['year']
     plt.stackplot(year, q0_papers, q1_papers, q2_papers, q3_papers,
-                  q4_papers, q5_papers, q6_papers, q7_papers, colors=pal, labels=['Topic 0',
-                                                                                  'Topic 1', 'Topic 2', 'Topic 3',
-                                                                                  'Topic 4',
-                                                                                  'Topic 5', 'Topic 6', 'Topic 7'])
+                  q4_papers, q5_papers, q6_papers, q7_papers, colors=pal, labels=['Pattern Recognition Optimization',
+                                                                                  'Graph Theory', 'Neural Net Design',
+                                                                                  'Image Recognition',
+                                                                                  'Stochastic Processes',
+                                                                                  'Neural Nets Application',
+                                                                                  'Statistical Learning',
+                                                                                  'Mathematical Model'])
 
     plt.ylabel('Total Papers')
     plt.title('Papers per topic')
