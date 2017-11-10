@@ -1,4 +1,5 @@
 from models.Data import Data
+from topic_model import map_topic_ids
 
 
 class Author:
@@ -26,20 +27,28 @@ class Author:
         result = {
             'id': self.id,
             'name': self.name,
-            'influence': self.influence
+            'influence': self.influence,
+            'topics': map_topic_ids(list(self.topics)),
+            'coAuthors': [],
+            'papers': []
         }
 
         if with_co_authors:
             co_authors = []
             for author_id in self.co_authors:
-                co_authors.append(Data.authors[author_id].to_json())
-            result['coAuthors'] = co_authors
+                co_authors.append(Data.authors[author_id])
+
+            co_authors.sort(key=lambda x: x.influence, reverse=True)
+            for co_author in co_authors:
+                result['coAuthors'].append(co_author.to_json())
 
         if with_papers:
             papers = []
             for paper_id in self.papers:
-                papers.append(Data.papers[paper_id].to_json())
-            result['papers'] = papers
+                papers.append(Data.papers[paper_id])
+
+            for paper in papers:
+                result['papers'].append(paper.to_json())
 
         if self.cluster is not None:
             result['cluster'] = self.cluster

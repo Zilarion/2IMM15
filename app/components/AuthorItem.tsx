@@ -86,10 +86,13 @@ const AuthorItem = (props: AuthorType & {showLink: boolean}) => {
 			}
 		});
 		const coAuthorString = authorArrayString.filter((item) => typeof item !== 'undefined').join(', ');
-		coAuthors = <SubTitleContainer>Worked with: {coAuthorString}</SubTitleContainer>;
+		coAuthors = 'Worked with: '+ coAuthorString;
 	}
 	let authorScore = props.score ? props.score.toFixed(2) : '';
 	let influence = props.influence ? props.influence.toFixed(2) : '0';
+	let topics = props.topics ? 'Writes about: ' +  props.topics.map((topic: any) => {
+		return topic.name;
+	}).join(', ') : '';
 
 	const link = props.showLink ? <StyledRouterLink to={'/author/' + props.id}>{props.name}</StyledRouterLink> : props.name;
 	return (
@@ -103,7 +106,10 @@ const AuthorItem = (props: AuthorType & {showLink: boolean}) => {
 			</IconContainer>
 			<DataContainer>
 				{link}
+				<SubTitleContainer>
 				{coAuthors}
+				{topics}
+				</SubTitleContainer>
 			</DataContainer>
 		</AuthorItemContainer>
 	);

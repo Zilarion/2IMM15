@@ -6,7 +6,6 @@ import csv
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
 
 
@@ -34,9 +33,6 @@ def calculate_total_per_year(papers_topic_label, total_topics, year):
     for topic_id in range(0, total_topics):
         total = [doc_id for doc_id, paper in papers_topic_label.items() if paper.topic == topic_id
                  and doc_id in paper_year]
-        print(topic_id)
-        print(total)
-        print("***************")
         results[topic_id] = len(total)
     return results
 
@@ -119,7 +115,7 @@ def stacked_barplot():
     plt.show()
 
 
-def stacked_area():
+def stacked_area(do_plot=False):
     file = os.path.join(TEMP_FOLDER, 'topic_evol.csv')
     df = pd.read_csv(file)
     df.year = df['year']
@@ -144,8 +140,8 @@ def stacked_area():
     q6_papers = df.query('topic == 6')['total_papers']
     q7_papers = df.query('topic == 7')['total_papers']
 
-    pal = sns.color_palette("Set2", 8)
     year = q0['year']
+
     plt.stackplot(year, q0_papers, q1_papers, q2_papers, q3_papers,
                   q4_papers, q5_papers, q6_papers, q7_papers, colors=pal, labels=['Pattern Recognition Optimization',
                                                                                   'Graph Theory', 'Neural Net Design',
@@ -159,3 +155,4 @@ def stacked_area():
     plt.title('Papers per topic')
     plt.legend(loc='upper left')
     plt.show()
+

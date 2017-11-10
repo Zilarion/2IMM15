@@ -1,9 +1,11 @@
 from gensim import corpora, models
 from gensim.models import CoherenceModel
 from gensim.models import LdaModel
+
 import os
 from nltk.stem import WordNetLemmatizer
 
+lemmatizer = WordNetLemmatizer()
 TEMP_FOLDER = os.path.join(os.path.sep, os.getcwd(), 'temp/')
 
 
@@ -133,3 +135,20 @@ def evaluate_graph(corpus, dictionary, limit=30, plot_graph=False):
             plt.legend(("c_v"), loc='best')
             plt.show()
     return lm_list
+
+
+def map_topic_ids(topics):
+    topics_mapping = {
+        0: 'Pattern recognition optimization',
+        1: 'Graph theory',
+        2: 'Neural net design',
+        3: 'Image recognition',
+        4: 'Stochastic process',
+        5: 'Neural net application',
+        6: 'Statistical learning',
+        7: 'Mathematical model',
+    }
+    result = []
+    for topic_id in topics:
+        result.append({'name': topics_mapping[topic_id], 'id': topic_id})
+    return result

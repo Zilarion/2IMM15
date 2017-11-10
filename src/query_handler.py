@@ -5,6 +5,8 @@ from index_computation import query, queryLM
 from models.Data import Data
 import time
 
+from topic_model import map_topic_ids
+
 pageSize = 20
 
 
@@ -91,7 +93,7 @@ def update_topics(old_topics, paper):
     if topic_id in new_topics:
         new_topics[topic_id]['number'] += 1
     else:
-        new_topics[topic_id] = {'number': 1, 'label': str(topic_id)}
+        new_topics[topic_id] = {'number': 1, 'topic': map_topic_ids([topic_id])}
     return new_topics
 
 

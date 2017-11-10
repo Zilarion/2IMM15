@@ -74,8 +74,9 @@ def compute_index_and_topics():
     lda_obj = load_ldamodel()
     if not lda_obj and collection_bow:
         save_gensim_dict(collection_bow)
-        gensim_dict = get_gensim_dict()
-        corpus = get_corpus()
+        #gensim_dict = get_gensim_dict()
+        #corpus = get_corpus()
+        print("Do LDA model")
         do_lda_modelling(corpus, gensim_dict, total_topics)
 
     if lda_obj:
@@ -93,8 +94,13 @@ def compute_index_and_topics():
                 doc = gensim_dict.doc2bow(doc_words)
                 Data.papers[docId].topic = label_doc(lda_obj[doc])
                 matrix_result[docId] = lda_obj[doc]
-
     print("Done computing topics")
+
+    topic_evolution.save_csv_topics(total_topics)
+
+    pprint(lda_obj.print_topics(8, num_words=10))
+    topic_evolution.stacked_area()
+    topic_evolution.stacked_barplot()
 
 
 # Calculating the term frequency for a single document

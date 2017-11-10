@@ -1,4 +1,5 @@
 from models.Data import Data
+from topic_model import map_topic_ids
 
 
 class Paper:
@@ -27,7 +28,7 @@ class Paper:
             'title': self.title,
             'year': self.year,
             'link': 'https://papers.nips.cc/paper/' + self.pdf_name,
-            'topic': self.topic,
+            'topic': map_topic_ids([self.topic]),
             'authors': [],
             'related': [],
             'influence': self.influence

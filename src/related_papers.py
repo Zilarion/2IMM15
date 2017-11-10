@@ -38,9 +38,8 @@ def compute_related_papers():
 
 def are_related(p1, p2):
     if p1.topic == p2.topic and p1 is not None:
-        return True
-    for a1 in p1.authors:
-        for a2 in p2.authors:
-            if Data.authors[a1].cluster == Data.authors[a2].cluster and Data.authors[a1].cluster is not None:
-                return True
+        for a1 in p1.authors:
+            for a2 in p2.authors:
+                if Data.authors[a1].cluster == Data.authors[a2].cluster and Data.authors[a1].cluster is not None:
+                    return True
     return False

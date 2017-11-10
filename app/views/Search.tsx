@@ -250,7 +250,8 @@ class SearchWithoutRouter extends React.Component<SearchProps, SearchState> {
 						</InputContainer>
 						<TabSelector tabs={[
 							{label: 'Papers', route: '/search/papers/'   + params.query || '', selected: params.domain === 'papers'},
-							{label: 'Authors', route: '/search/authors/' + params.query || '', selected: params.domain === 'authors'}
+							{label: 'Authors', route: '/search/authors/' + params.query || '', selected: params.domain === 'authors'},
+							{label: 'Evolution', route: '/evolution'}
 						]}/>
 					</HeaderContainer>
 					<ResultContainer>
